@@ -38,10 +38,14 @@ update_status ModuleSceneIntro::Update(float dt)
 	p.axis = true;
 	p.Render();
 
+	Cube c(8.0f, 2.5f, 50.0f);
+	c.SetPos(10.0f, 0.0f, 1.0f);
+	c.axis = true;
+	c.Render();
+
 	return UPDATE_CONTINUE;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 }
-
