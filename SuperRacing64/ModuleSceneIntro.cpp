@@ -22,7 +22,9 @@ bool ModuleSceneIntro::Start()
 
 	//Roads
 	
-	CreateStraightRoadSegment(vec3(1.0f, 1.0f, 10.0f), 30.0f);
+	//CreateStraightRoadSegment(vec3(1.0f, 1.0f, 10.0f), 30.0f);
+
+	CreateInclinedRoadSegment(vec3(1.0f, 1.0f, 10.0f), 30.0f, 0.0f, { 0.0f, 0.0f, 0.0f }, 30.0f, X_AXIS);
 
 	//CreateStraightRoadSegment(vec3(-4.8f, 1.0f, 35.0f), 30.0f, -25.0f, Y_AXIS);
 	
@@ -98,13 +100,29 @@ void ModuleSceneIntro::CreateStraightRoadSegment(vec3 position, float length, fl
 	road_segment->SetPos(position.x, position.y, position.z);
 
 	if (angle != 0.0f && (axis.x != 0.0f || axis.y != 0.0f || axis.z != 0.0f))
-		road_segment->SetRotation(angle, axis);
+		RotateRoadSegment(road_segment, angle, axis);
 
 	PhysBody3D* road_segment_body = App->physics->AddBody(*road_segment, STATIC_MASS);
 
 	roads_list.add(road_segment);
 
 	CreateWalls(road_segment, position);
+}
+
+void ModuleSceneIntro::CreateInclinedRoadSegment(vec3 position, float length, float angle_1, vec3 axis_1, float angle_2 , vec3 axis_2)
+{
+	Cube* road_segment = new Cube(ROAD_WIDTH, ROAD_HEIGHT, length);
+	road_segment->SetPos(position.x, position.y, position.z);
+
+	if (angle_1 != 0.0f && (axis_1.x != 0.0f || axis_1.y != 0.0f || axis_1.z != 0.0f))
+		RotateRoadSegment(road_segment, angle_1, axis_1);
+
+	RotateRoadSegment(road_segment, angle_2, axis_2);
+
+	PhysBody3D* road_segment_body = App->physics->AddBody(*road_segment, STATIC_MASS);
+
+	roads_list.add(road_segment);
+
 }
 
 void ModuleSceneIntro::CreateWalls(Cube * road, vec3 position)
@@ -148,4 +166,9 @@ void ModuleSceneIntro::CreateWalls(Cube * road, vec3 position)
 			cube_offset += cube_right->size.z;
 		}
 	}
+}
+
+void ModuleSceneIntro::RotateRoadSegment(Cube* road, float angle, vec3 axis)
+{
+	road->SetRotation(angle, axis);
 }
