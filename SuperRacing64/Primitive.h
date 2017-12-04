@@ -64,6 +64,7 @@ class Cylinder : public Primitive
 public:
 	Cylinder();
 	Cylinder(float radius, float height);
+	Cylinder(float radius, float height, float angle, const vec3 vec);
 	void InnerRender() const;
 public:
 	float radius;

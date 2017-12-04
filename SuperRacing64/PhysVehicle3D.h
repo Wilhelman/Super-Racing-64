@@ -2,6 +2,7 @@
 
 #include "PhysBody3D.h"
 #include "glmath.h"
+#include "Primitive.h"
 
 class btRaycastVehicle;
 struct PhysBody3D;
@@ -26,6 +27,14 @@ struct VehicleInfo
 	
 	vec3 chassis_size;
 	vec3 chassis_offset;
+
+	Cylinder chassis_pilot;
+	vec3 chassis_pilot_offset;
+
+	vec3 chassis_back_size;
+	vec3 chassis_back_offset;
+
+
 	float mass;
 	float suspensionStiffness; // default to 5.88 / 10.0 offroad / 50.0 sports car / 200.0 F1 car
 	float suspensionCompression; // default to 0.83

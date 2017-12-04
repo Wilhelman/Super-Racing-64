@@ -185,6 +185,13 @@ Cylinder::Cylinder(float radius, float height) : Primitive(), radius(radius), he
 	type = PrimitiveTypes::Primitive_Cylinder;
 }
 
+Cylinder::Cylinder(float radius, float height, float angle, const vec3 vec): Primitive(), radius(radius), height(height)
+{
+	type = PrimitiveTypes::Primitive_Cylinder;
+	this->SetRotation(angle, vec);
+
+}
+
 void Cylinder::InnerRender() const
 {
 	int n = 30;
