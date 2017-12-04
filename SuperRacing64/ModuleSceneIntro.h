@@ -4,7 +4,14 @@
 #include "Globals.h"
 #include "Primitive.h"
 
-#define MAX_SNAKE 2
+#define ROAD_HEIGHT 1.0f
+#define ROAD_WIDTH 10.0f
+
+#define STATIC_MASS 0.0f
+
+#define X_AXIS {1.0f, 0.0f, 0.0f}
+#define Y_AXIS {0.0f, 1.0f, 0.0f}
+#define Z_AXIS {0.0f, 0.0f, 1.0f}
 
 struct PhysBody3D;
 struct PhysMotor3D;
@@ -21,14 +28,13 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
-public:
-	/*
-	PhysBody3D* pb_snake[MAX_SNAKE];
-	Sphere s_snake[MAX_SNAKE];
+	void CreateStraightRoadSegment(vec3 position, float length, float angle = 0.0f, vec3 axis = { 0.0f, 0.0f, 0.0f });
+	void CreateWalls(Cube* road, vec3 position);
 
-	PhysBody3D* pb_snake2[MAX_SNAKE];
-	Sphere s_snake2[MAX_SNAKE];
-	*/
+	void RenderRoads() const;
+	void RenderWalls() const;
+
+public:
 
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
@@ -41,4 +47,10 @@ public:
 
 	PhysMotor3D* left_wheel;
 	PhysMotor3D* right_wheel;
+
+	//Roads
+	p2List<Cube*> roads_list;
+
+	//Walls
+	p2List<Cube*> walls_list;
 };
