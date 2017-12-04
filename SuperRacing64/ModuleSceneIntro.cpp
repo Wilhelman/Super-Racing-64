@@ -22,11 +22,9 @@ bool ModuleSceneIntro::Start()
 
 	//Roads
 	
-	//CreateStraightRoadSegment(vec3(1.0f, 1.0f, 10.0f), 30.0f);
+	CreateStraightRoadSegment(vec3(0.0f, 1.0f, 10.0f), 30.0f);
+	CreateStraightRoadSegment(vec3(-20.0f, 1.0f, 20.0f), 30.0f, 90.0f, Y_AXIS);
 
-	CreateInclinedRoadSegment(vec3(1.0f, 1.0f, 10.0f), 30.0f, 0.0f, { 0.0f, 0.0f, 0.0f }, 30.0f, X_AXIS);
-
-	//CreateStraightRoadSegment(vec3(-4.8f, 1.0f, 35.0f), 30.0f, -25.0f, Y_AXIS);
 	
 
 
@@ -158,7 +156,7 @@ void ModuleSceneIntro::CreateWalls(Cube * road, vec3 position)
 				cube_right->color = White;
 
 			cube_right->SetPos(bottom_right.x - cube_left->size.x / 2, bottom_right.y + cube_left->size.y / 3, bottom_right.z + cube_left->size.z / 2 + cube_offset);
-			
+
 			App->physics->AddBody(*cube_right, STATIC_MASS);
 			walls_list.add(cube_right);
 
