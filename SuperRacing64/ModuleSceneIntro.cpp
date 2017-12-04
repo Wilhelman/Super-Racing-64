@@ -24,8 +24,7 @@ bool ModuleSceneIntro::Start()
 	
 	CreateStraightRoadSegment(vec3(0.0f, 1.0f, 10.0f), 30.0f);
 	CreateStraightRoadSegment(vec3(-20.0f, 1.0f, 20.0f), 30.0f, 90.0f, Y_AXIS);
-
-	
+	CreateInclinedRoadSegment(vec3(-50.0f, 1.0f, 20.0f), 30.0f, 90.0f, Y_AXIS, 30.0f, X_AXIS);
 
 
 
@@ -104,7 +103,7 @@ void ModuleSceneIntro::CreateStraightRoadSegment(vec3 position, float length, fl
 
 	roads_list.add(road_segment);
 
-	CreateWalls(road_segment, position);
+	//CreateWalls(road_segment, position);
 }
 
 void ModuleSceneIntro::CreateInclinedRoadSegment(vec3 position, float length, float angle_1, vec3 axis_1, float angle_2 , vec3 axis_2)
@@ -115,7 +114,7 @@ void ModuleSceneIntro::CreateInclinedRoadSegment(vec3 position, float length, fl
 	if (angle_1 != 0.0f && (axis_1.x != 0.0f || axis_1.y != 0.0f || axis_1.z != 0.0f))
 		RotateRoadSegment(road_segment, angle_1, axis_1);
 
-	RotateRoadSegment(road_segment, angle_2, axis_2);
+	//road_segment->SetRotation(angle_2, axis_2);
 
 	PhysBody3D* road_segment_body = App->physics->AddBody(*road_segment, STATIC_MASS);
 
