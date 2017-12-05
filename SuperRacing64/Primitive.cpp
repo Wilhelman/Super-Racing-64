@@ -17,6 +17,11 @@ PrimitiveTypes Primitive::GetType() const
 	return type;
 }
 
+vec3 Primitive::GetPos() const
+{
+	return pos;
+}
+
 // ------------------------------------------------------------
 void Primitive::Render() const
 {
@@ -85,6 +90,7 @@ void Primitive::InnerRender() const
 void Primitive::SetPos(float x, float y, float z)
 {
 	transform.translate(x, y, z);
+	pos = vec3(x, y, z);
 }
 
 // ------------------------------------------------------------

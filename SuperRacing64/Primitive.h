@@ -25,15 +25,17 @@ public:
 	void			SetRotation(float angle, const vec3 &u);
 	void			Scale(float x, float y, float z);
 	PrimitiveTypes	GetType() const;
+	vec3			GetPos() const;
 
 public:
 	
 	Color color;
 	mat4x4 transform;
 	bool axis,wire;
-
+	
 protected:
 	PrimitiveTypes type;
+	vec3 pos;
 };
 
 // ============================================

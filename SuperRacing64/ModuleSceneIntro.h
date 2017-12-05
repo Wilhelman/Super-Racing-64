@@ -16,6 +16,16 @@
 struct PhysBody3D;
 struct PhysMotor3D;
 
+enum RoadType
+{
+	FORWARD_ROAD,
+	BACKWARD_ROAD,
+	RIGHT_ROAD,
+	LEFT_ROAD,
+
+	NOT_DEF_ROAD
+};
+
 class ModuleSceneIntro : public Module
 {
 public:
@@ -28,10 +38,11 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
-	void CreateStraightRoadSegment(vec3 position, float length, float angle = 0.0f, vec3 axis = { 0.0f, 0.0f, 0.0f });
-	void CreateInclinedRoadSegment(vec3 position, float length, float angle_1 = 0.0f, vec3 axis_1 = { 0.0f, 0.0f, 0.0f }, float angle_2 = 0.0f, vec3 axis_2 = Z_AXIS);
+
 	void CreateWalls(Cube* road, vec3 position);
 	void RotateRoadSegment(Cube* road, float angle, vec3 axis);
+
+	void AddRoad(float length, RoadType road_type);
 
 	void RenderRoads() const;
 	void RenderWalls() const;
@@ -55,4 +66,6 @@ public:
 
 	//Walls
 	p2List<Cube*> walls_list;
+
+	RoadType last_road_type = NOT_DEF_ROAD;
 };
