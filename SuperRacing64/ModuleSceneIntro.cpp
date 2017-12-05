@@ -83,7 +83,7 @@ void ModuleSceneIntro::AddRoad(float length, RoadType road_type)
 {
 	if (roads_list.count() == 0) // First road
 	{
-		Cube* road_segment = new Cube(ROAD_WIDTH, ROAD_HEIGHT, 30.0f);
+		Cube* road_segment = new Cube(ROAD_WIDTH, ROAD_HEIGHT, length);
 		road_segment->SetPos(0.0f, 1.0f, 10.0f);
 		PhysBody3D* road_segment_body = App->physics->AddBody(*road_segment, STATIC_MASS);
 		roads_list.add(road_segment);
