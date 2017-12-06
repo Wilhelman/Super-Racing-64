@@ -103,16 +103,16 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	
 
-	//if player
 	
-	/*Position.x = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getX() - X_CAM_OFFSET * App->player->vehicle->vehicle->getForwardVector().getX();
+	
+	Position.x = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getX() - X_CAM_OFFSET * App->player->vehicle->vehicle->getForwardVector().getX();
 	Position.y = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getY() + Y_CAM_OFFSET * App->player->vehicle->vehicle->getUpAxis();
 	Position.z = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getZ() - Z_CAM_OFFSET * App->player->vehicle->vehicle->getForwardVector().getZ();
 
 	float x_value = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getX() + 10 * App->player->vehicle->vehicle->getForwardVector().getX();
 	float z_value = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getZ() + 10 * App->player->vehicle->vehicle->getForwardVector().getZ();
 
-	LookAt(vec3(x_value, 1, z_value));*/
+	LookAt(vec3(x_value, 1, z_value));
 
 	// Recalculate matrix -------------
 	CalculateViewMatrix();

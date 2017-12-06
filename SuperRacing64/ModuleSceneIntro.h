@@ -44,7 +44,6 @@ public:
 
 
 	void CreateWalls(Cube* road, vec3 position);
-	void RotateRoadSegment(Cube* road, float angle, vec3 axis);
 
 	void AddRoad(float length, RoadType road_type);
 	Cube* BuildForawardRoad(Cube* last_cube, float length);
@@ -56,6 +55,7 @@ public:
 	Cube* BuildLeftRamp(Cube* last_cube, float length, vec3 axis);
 	Cube* BuildRightRamp(Cube* last_cube, float length, vec3 axis);
 
+	void BuildCircuit_1();
 
 	void RenderRoads() const;
 	void RenderWalls() const;

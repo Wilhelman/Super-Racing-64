@@ -21,22 +21,7 @@ bool ModuleSceneIntro::Start()
 	App->camera->LookAt(vec3(0, 0, 0));
 
 	//Roads
-	AddRoad(30.0f, FORWARD_ROAD);
-	AddRoad(30.0f, LEFT_ROAD);
-	AddRoad(30.0f, BACKWARD_ROAD);
-	AddRoad(30.0f, RIGHT_RAMP);
-
-	/*AddRoad(50.0f, LEFT_ROAD);
-	AddRoad(30.0f, BACKWARD_ROAD);
-	AddRoad(30.0f, LEFT_ROAD);
-	AddRoad(30.0f, FORWARD_ROAD);
-	AddRoad(30.0f, LEFT_ROAD);
-	AddRoad(30.0f, FORWARD_ROAD);
-	AddRoad(30.0f, RIGHT_ROAD);
-	AddRoad(30.0f, FORWARD_ROAD);
-	AddRoad(30.0f, FORWARD_ROAD);
-	AddRoad(30.0f, RIGHT_ROAD);
-	AddRoad(30.0f, BACKWARD_ROAD);*/
+	BuildCircuit_1();
 
 	return ret;
 }
@@ -163,6 +148,18 @@ Cube * ModuleSceneIntro::BuildForawardRoad(Cube* last_cube, float length)
 		vec3 pos = pos = vec3(last_cube->GetPos().x + last_cube->size.x / 2 + road_segment->size.x / 2, last_cube->GetPos().y, last_cube->GetPos().z + (length / 2 - last_cube->size.z / 2));
 		road_segment->SetPos(pos.x, pos.y, pos.z);
 	}
+	else if (last_road_type == FORWARD_RAMP)
+	{
+		road_segment = new Cube(ROAD_WIDTH, ROAD_HEIGHT, length);
+		vec3 pos = pos = vec3(last_cube->GetPos().x, last_cube->GetPos().y + last_cube->size.z / 4.15f, last_cube->GetPos().z + last_cube->size.z / 2 + length / 2 - 1.0f);
+		road_segment->SetPos(pos.x, pos.y, pos.z);
+	}
+	else if (last_road_type == RIGHT_RAMP)
+	{
+		road_segment = new Cube(ROAD_WIDTH, ROAD_HEIGHT, length);
+		vec3 pos = pos = vec3(last_cube->GetPos().x - (last_cube->size.x / 2 - road_segment->size.x / 2), last_cube->GetPos().y, last_cube->GetPos().z + last_cube->size.z / 2 + length / 2);
+		road_segment->SetPos(pos.x, pos.y, pos.z);
+	}
 
 	last_road_type = FORWARD_ROAD;
 
@@ -189,6 +186,18 @@ Cube * ModuleSceneIntro::BuildBackwardRoad(Cube * last_cube, float length)
 	{
 		road_segment = new Cube(ROAD_WIDTH, ROAD_HEIGHT, length);
 		vec3 pos = vec3(last_cube->GetPos().x + last_cube->size.x / 2 + road_segment->size.x / 2, last_cube->GetPos().y, last_cube->GetPos().z - (length / 2 - last_cube->size.z / 2));
+		road_segment->SetPos(pos.x, pos.y, pos.z);
+	}
+	else if (last_road_type == BACKWARD_RAMP)
+	{
+		road_segment = new Cube(ROAD_WIDTH, ROAD_HEIGHT, length);
+		vec3 pos = vec3(last_cube->GetPos().x, last_cube->GetPos().y + last_cube->size.z / 4.15f, last_cube->GetPos().z - last_cube->size.z / 2 - length / 2 + 2.0f);
+		road_segment->SetPos(pos.x, pos.y, pos.z);
+	}
+	else if (last_road_type == FORWARD_RAMP)
+	{
+		road_segment = new Cube(ROAD_WIDTH, ROAD_HEIGHT, length);
+		vec3 pos = vec3(last_cube->GetPos().x, last_cube->GetPos().y - last_cube->size.z / 4.15f, last_cube->GetPos().z - last_cube->size.z / 2 - length / 2 + 2.0f);
 		road_segment->SetPos(pos.x, pos.y, pos.z);
 	}
 
@@ -278,6 +287,14 @@ Cube * ModuleSceneIntro::BuildForawardRamp(Cube * last_cube, float length, vec3 
 		vec3 pos = pos = vec3(last_cube->GetPos().x + (last_cube->size.x / 2 - road_segment->size.x / 2), last_cube->GetPos().y + length / 3.965f, last_cube->GetPos().z + last_cube->size.z / 2 + length / 2 - length / 17.0f);		
 		road_segment->SetPos(pos.x, pos.y, pos.z);
 	}
+	if (last_road_type == BACKWARD_ROAD)
+	{
+		road_segment = new Cube(ROAD_WIDTH, ROAD_HEIGHT, length);
+		road_segment->SetRotation(-30.0f, axis);
+		vec3 pos = pos = vec3(last_cube->GetPos().x, last_cube->GetPos().y - length / 3.965f, last_cube->GetPos().z - last_cube->size.z / 2 - length / 2 + 2.0f);
+		road_segment->SetPos(pos.x, pos.y, pos.z);
+
+	}
 
 	last_road_type = FORWARD_RAMP;
 
@@ -363,6 +380,25 @@ Cube * ModuleSceneIntro::BuildRightRamp(Cube * last_cube, float length, vec3 axi
 	return road_segment;
 }
 
+void ModuleSceneIntro::BuildCircuit_1()
+{
+	AddRoad(32.0f, FORWARD_ROAD);
+	AddRoad(64.0f, LEFT_ROAD);
+	AddRoad(40.0f, FORWARD_ROAD);
+	AddRoad(104.0f, LEFT_ROAD);
+	AddRoad(80.0f, BACKWARD_ROAD);
+	AddRoad(54.0f, RIGHT_ROAD);
+	AddRoad(32.0f, FORWARD_ROAD);
+	AddRoad(48.0f, RIGHT_ROAD);
+	AddRoad(24.0f, BACKWARD_RAMP);
+	AddRoad(40.0f, BACKWARD_ROAD);
+	AddRoad(24.0f, FORWARD_RAMP);
+	AddRoad(16.0F, BACKWARD_ROAD);
+	AddRoad(88.0f, LEFT_ROAD);
+	AddRoad(38.0f, FORWARD_ROAD);
+	AddRoad(184.0f, RIGHT_ROAD);
+	AddRoad(24.6f, FORWARD_ROAD);
+}
 
 
 void ModuleSceneIntro::CreateWalls(Cube * road, vec3 position)
@@ -406,9 +442,4 @@ void ModuleSceneIntro::CreateWalls(Cube * road, vec3 position)
 			cube_offset += cube_right->size.z;
 		}
 	}
-}
-
-void ModuleSceneIntro::RotateRoadSegment(Cube* road, float angle, vec3 axis)
-{
-	road->SetRotation(angle, axis);
 }
