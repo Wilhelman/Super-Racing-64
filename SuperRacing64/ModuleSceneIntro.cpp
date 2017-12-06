@@ -23,6 +23,8 @@ bool ModuleSceneIntro::Start()
 	//Roads
 	BuildCircuit_1();
 
+
+
 	return ret;
 }
 
@@ -49,9 +51,10 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	Plane p(0, 1, 0, 0);
-	p.axis = true;
-	p.Render();
+	Cube ground( 1000, 1, 1000);
+	ground.axis = true;
+	ground.color = Green;
+	ground.Render();
 
 	RenderRoads();
 	RenderWalls();
@@ -122,6 +125,7 @@ void ModuleSceneIntro::AddRoad(float length, RoadType road_type)
 			break;
 		}
 	}
+	road_segment->color = Grey;
 	App->physics->AddBody(*road_segment, STATIC_MASS);
 	roads_list.add(road_segment);
 }
