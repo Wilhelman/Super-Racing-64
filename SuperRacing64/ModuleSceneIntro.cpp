@@ -22,6 +22,7 @@ bool ModuleSceneIntro::Start()
 
 	//Roads
 	BuildCircuit_1();
+	BuildCircuit_2();
 
 
 
@@ -34,10 +35,10 @@ bool ModuleSceneIntro::CleanUp()
 	LOG("Unloading Intro scene");
 
 	// Deleting Roads
-	for (p2List_item<Cube*>* road_item = roads_list.getFirst(); road_item; road_item = road_item->next)
+	for (p2List_item<Cube*>* road_item = roads_circuit_1.getFirst(); road_item; road_item = road_item->next)
 		delete road_item->data;
 
-	roads_list.clear();
+	roads_circuit_1.clear();
 
 	// Deleting Walls
 	for (p2List_item<Cube*>* wall_item = walls_list.getFirst(); wall_item; wall_item = wall_item->next)
@@ -69,7 +70,9 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 
 void ModuleSceneIntro::RenderRoads() const
 {
-	for (p2List_item<Cube*>* road_item = roads_list.getFirst(); road_item; road_item = road_item->next)
+	for (p2List_item<Cube*>* road_item = roads_circuit_1.getFirst(); road_item; road_item = road_item->next)
+		road_item->data->Render();
+	for (p2List_item<Cube*>* road_item = roads_circuit_2.getFirst(); road_item; road_item = road_item->next)
 		road_item->data->Render();
 }
 
@@ -79,19 +82,31 @@ void ModuleSceneIntro::RenderWalls() const
 		wall_item->data->Render();
 }
 
-void ModuleSceneIntro::AddRoad(float length, RoadType road_type)
+void ModuleSceneIntro::AddRoad(float length, RoadType road_type, Circuit circuit)
 {
 	Cube* road_segment = nullptr;
 
-	if (roads_list.count() == 0) // First road
+	if (roads_circuit_1.count() == 0 && circuit == CIRCUIT_1) // First road
 	{
 		road_segment = new Cube(ROAD_WIDTH, ROAD_HEIGHT, length);
 		road_segment->SetPos(0.0f, ROAD_HEIGHT / 2.0f, 10.0f);
 		last_road_type = FORWARD_ROAD;
 	}
+	else if (roads_circuit_2.count() == 0 && circuit == CIRCUIT_2)
+	{
+		road_segment = new Cube(length, ROAD_HEIGHT, ROAD_WIDTH);
+		road_segment->SetPos(-21.0f, ROAD_HEIGHT / 2.0f, 31.0f);
+		last_road_type = RIGHT_ROAD;
+	}
 	else // Roads after the first one
 	{
-		Cube* last_cube = roads_list.getLast()->data;
+
+		Cube* last_cube = nullptr;
+
+		if (circuit == CIRCUIT_1)
+			last_cube = roads_circuit_1.getLast()->data;
+		else
+			last_cube = roads_circuit_2.getLast()->data;
 
 		switch (road_type)
 		{
@@ -108,7 +123,7 @@ void ModuleSceneIntro::AddRoad(float length, RoadType road_type)
 			road_segment = BuildLeftRoad(last_cube, length);
 			break;
 		case FORWARD_RAMP:
-			road_segment = BuildForawardRamp(last_cube, length, X_AXIS);
+			road_segment = BuildForwardRamp(last_cube, length, X_AXIS);
 			break;
 		case BACKWARD_RAMP:
 			road_segment = BuildBackwardRamp(last_cube, length, X_AXIS);
@@ -119,7 +134,7 @@ void ModuleSceneIntro::AddRoad(float length, RoadType road_type)
 		case LEFT_RAMP:
 			road_segment = BuildLeftRamp(last_cube, length, Z_AXIS);
 			break;
-		case NOT_DEF_ROAD:
+		case ROAD_NOT_DEF:
 			break;
 		default:
 			break;
@@ -127,7 +142,11 @@ void ModuleSceneIntro::AddRoad(float length, RoadType road_type)
 	}
 	road_segment->color = Grey;
 	App->physics->AddBody(*road_segment, STATIC_MASS);
-	roads_list.add(road_segment);
+
+	if (circuit == CIRCUIT_1)
+		roads_circuit_1.add(road_segment);
+	else
+		roads_circuit_2.add(road_segment);
 }
 
 Cube * ModuleSceneIntro::BuildForawardRoad(Cube* last_cube, float length)
@@ -265,7 +284,7 @@ Cube * ModuleSceneIntro::BuildRightRoad(Cube * last_cube, float length)
 	return road_segment;
 }
 
-Cube * ModuleSceneIntro::BuildForawardRamp(Cube * last_cube, float length, vec3 axis)
+Cube * ModuleSceneIntro::BuildForwardRamp(Cube * last_cube, float length, vec3 axis)
 {
 	Cube* road_segment = nullptr;
 
@@ -378,6 +397,13 @@ Cube * ModuleSceneIntro::BuildRightRamp(Cube * last_cube, float length, vec3 axi
 		vec3 pos = vec3(last_cube->GetPos().x - road_segment->size.x / 2 - last_cube->size.x / 2 + length / 17.0f, last_cube->GetPos().y + length / 3.965f, last_cube->GetPos().z - (last_cube->size.z / 2 - road_segment->size.z / 2));
 		road_segment->SetPos(pos.x, pos.y, pos.z);
 	}
+	else if (last_road_type == RIGHT_ROAD)
+	{
+		road_segment = new Cube(length, ROAD_HEIGHT, ROAD_WIDTH);
+		road_segment->SetRotation(-30.0f, axis);
+		vec3 pos = vec3(last_cube->GetPos().x - road_segment->size.x / 2 - last_cube->size.x / 2 + length / 17.0f, last_cube->GetPos().y + length / 3.965f, last_cube->GetPos().z - (last_cube->size.z / 2 - road_segment->size.z / 2));
+		road_segment->SetPos(pos.x, pos.y, pos.z);
+	}
 
 	last_road_type = RIGHT_RAMP;
 
@@ -386,22 +412,37 @@ Cube * ModuleSceneIntro::BuildRightRamp(Cube * last_cube, float length, vec3 axi
 
 void ModuleSceneIntro::BuildCircuit_1()
 {
-	AddRoad(32.0f, FORWARD_ROAD);
-	AddRoad(64.0f, LEFT_ROAD);
-	AddRoad(40.0f, FORWARD_ROAD);
-	AddRoad(104.0f, LEFT_ROAD);
-	AddRoad(80.0f, BACKWARD_ROAD);
-	AddRoad(54.0f, RIGHT_ROAD);
-	AddRoad(32.0f, FORWARD_ROAD);
-	AddRoad(48.0f, RIGHT_ROAD);
-	AddRoad(24.0f, BACKWARD_RAMP);
-	AddRoad(40.0f, BACKWARD_ROAD);
-	AddRoad(24.0f, FORWARD_RAMP);
-	AddRoad(16.0F, BACKWARD_ROAD);
-	AddRoad(88.0f, LEFT_ROAD);
-	AddRoad(38.0f, FORWARD_ROAD);
-	AddRoad(184.0f, RIGHT_ROAD);
-	AddRoad(24.6f, FORWARD_ROAD);
+	AddRoad(32.0f, FORWARD_ROAD, CIRCUIT_1);
+	AddRoad(64.0f, LEFT_ROAD, CIRCUIT_1);
+	AddRoad(40.0f, FORWARD_ROAD, CIRCUIT_1);
+	AddRoad(104.0f, LEFT_ROAD, CIRCUIT_1);
+	AddRoad(80.0f, BACKWARD_ROAD, CIRCUIT_1);
+	AddRoad(54.0f, RIGHT_ROAD, CIRCUIT_1);
+	AddRoad(32.0f, FORWARD_ROAD, CIRCUIT_1);
+	AddRoad(48.0f, RIGHT_ROAD, CIRCUIT_1);
+	AddRoad(24.0f, BACKWARD_RAMP, CIRCUIT_1);
+	AddRoad(40.0f, BACKWARD_ROAD, CIRCUIT_1);
+	AddRoad(24.0f, FORWARD_RAMP, CIRCUIT_1);
+	AddRoad(16.0F, BACKWARD_ROAD, CIRCUIT_1);
+	AddRoad(88.0f, LEFT_ROAD, CIRCUIT_1);
+	AddRoad(38.0f, FORWARD_ROAD, CIRCUIT_1);
+	AddRoad(184.0f, RIGHT_ROAD, CIRCUIT_1);
+	AddRoad(24.6f, FORWARD_ROAD, CIRCUIT_1);
+}
+
+void ModuleSceneIntro::BuildCircuit_2()
+{
+	AddRoad(48.0f, RIGHT_ROAD, CIRCUIT_2);
+	AddRoad(32.0f, BACKWARD_ROAD, CIRCUIT_2);
+	AddRoad(24.0f, BACKWARD_RAMP, CIRCUIT_2);
+	AddRoad(48.0f, BACKWARD_ROAD, CIRCUIT_2);
+	AddRoad(40.0f, RIGHT_ROAD, CIRCUIT_2);
+	AddRoad(48.0f, BACKWARD_ROAD, CIRCUIT_2);
+	AddRoad(96.0f, LEFT_ROAD, CIRCUIT_2);
+	AddRoad(24.0f, BACKWARD_ROAD, CIRCUIT_2);
+	AddRoad(150.0f, LEFT_ROAD, CIRCUIT_2);
+	AddRoad(80.0f, FORWARD_ROAD, CIRCUIT_2);
+	AddRoad(10.0f, FORWARD_RAMP, CIRCUIT_2);
 }
 
 

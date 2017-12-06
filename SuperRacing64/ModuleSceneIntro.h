@@ -27,7 +27,15 @@ enum RoadType
 	RIGHT_RAMP,
 	LEFT_RAMP,
 
-	NOT_DEF_ROAD
+	ROAD_NOT_DEF
+};
+
+enum Circuit
+{
+	CIRCUIT_1,
+	CIRCUIT_2,
+
+	CIRCUIT_NOT_DEF
 };
 
 class ModuleSceneIntro : public Module
@@ -45,17 +53,18 @@ public:
 
 	void CreateWalls(Cube* road, vec3 position);
 
-	void AddRoad(float length, RoadType road_type);
+	void AddRoad(float length, RoadType road_type, Circuit circuit);
 	Cube* BuildForawardRoad(Cube* last_cube, float length);
 	Cube* BuildBackwardRoad(Cube* last_cube, float length);
 	Cube* BuildLeftRoad(Cube* last_cube, float length);
 	Cube* BuildRightRoad(Cube* last_cube, float length);
-	Cube* BuildForawardRamp(Cube* last_cube, float length, vec3 axis);
+	Cube* BuildForwardRamp(Cube* last_cube, float length, vec3 axis);
 	Cube* BuildBackwardRamp(Cube* last_cube, float length, vec3 axis);
 	Cube* BuildLeftRamp(Cube* last_cube, float length, vec3 axis);
 	Cube* BuildRightRamp(Cube* last_cube, float length, vec3 axis);
 
 	void BuildCircuit_1();
+	void BuildCircuit_2();
 
 	void RenderRoads() const;
 	void RenderWalls() const;
@@ -75,10 +84,11 @@ public:
 	PhysMotor3D* right_wheel;
 
 	//Roads
-	p2List<Cube*> roads_list;
+	p2List<Cube*> roads_circuit_1;
+	p2List<Cube*> roads_circuit_2;
 
 	//Walls
 	p2List<Cube*> walls_list;
 
-	RoadType last_road_type = NOT_DEF_ROAD;
+	RoadType last_road_type = ROAD_NOT_DEF;
 };
