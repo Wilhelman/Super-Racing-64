@@ -22,6 +22,10 @@ enum RoadType
 	BACKWARD_ROAD,
 	RIGHT_ROAD,
 	LEFT_ROAD,
+	FORWARD_RAMP,
+	BACKWARD_RAMP,
+	RIGHT_RAMP,
+	LEFT_RAMP,
 
 	NOT_DEF_ROAD
 };
@@ -47,7 +51,10 @@ public:
 	Cube* BuildBackwardRoad(Cube* last_cube, float length);
 	Cube* BuildLeftRoad(Cube* last_cube, float length);
 	Cube* BuildRightRoad(Cube* last_cube, float length);
-
+	Cube* BuildForawardRamp(Cube* last_cube, float length, vec3 axis);
+	Cube* BuildBackwardRamp(Cube* last_cube, float length, vec3 axis);
+	Cube* BuildLeftRamp(Cube* last_cube, float length, vec3 axis);
+	Cube* BuildRightRamp(Cube* last_cube, float length, vec3 axis);
 
 
 	void RenderRoads() const;
