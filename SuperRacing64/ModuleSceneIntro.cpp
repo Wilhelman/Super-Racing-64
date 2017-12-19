@@ -75,6 +75,7 @@ void ModuleSceneIntro::RenderRoads() const
 {
 	for (p2List_item<Cube*>* road_item = roads_circuit_1.getFirst(); road_item; road_item = road_item->next)
 		road_item->data->Render();
+
 	for (p2List_item<Cube*>* road_item = roads_circuit_2.getFirst(); road_item; road_item = road_item->next)
 		road_item->data->Render();
 }
@@ -273,7 +274,7 @@ Cube * ModuleSceneIntro::BuildBackwardRamp(Cube * last_cube, float length, vec3 
 	return road_segment;
 }
 
-Cube * ModuleSceneIntro::BuildLeftRamp(Cube * last_cube, float length, vec3 axis)
+Cube * ModuleSceneIntro::BuildLeftRamp(Cube * last_cube, float length, vec3 axis) // TODO: delete if not used
 {
 	Cube* road_segment = new Cube(length, ROAD_HEIGHT, ROAD_WIDTH);
 	vec3 pos(0.0f, 0.0f, 0.0f);
@@ -290,7 +291,7 @@ Cube * ModuleSceneIntro::BuildLeftRamp(Cube * last_cube, float length, vec3 axis
 	return road_segment;
 }
 
-Cube * ModuleSceneIntro::BuildRightRamp(Cube * last_cube, float length, vec3 axis)
+Cube * ModuleSceneIntro::BuildRightRamp(Cube * last_cube, float length, vec3 axis) // TODO: delete if not used
 {
 	Cube* road_segment = new Cube(length, ROAD_HEIGHT, ROAD_WIDTH);
 	vec3 pos(0.0f, 0.0f, 0.0f);
