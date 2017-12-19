@@ -24,8 +24,6 @@ bool ModuleSceneIntro::Start()
 	BuildCircuit_1();
 	BuildCircuit_2();
 
-
-
 	return ret;
 }
 
@@ -36,13 +34,19 @@ bool ModuleSceneIntro::CleanUp()
 
 	// Deleting Roads
 	for (p2List_item<Cube*>* road_item = roads_circuit_1.getFirst(); road_item; road_item = road_item->next)
+	{
 		delete road_item->data;
+		road_item->data = nullptr;
+	}
 
 	roads_circuit_1.clear();
 
 	// Deleting Walls
 	for (p2List_item<Cube*>* wall_item = walls_list.getFirst(); wall_item; wall_item = wall_item->next)
+	{
 		delete wall_item->data;
+		wall_item->data = nullptr;
+	}
 
 	walls_list.clear();
 
@@ -59,7 +63,6 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	RenderRoads();
 	RenderWalls();
-
 
 	return UPDATE_CONTINUE;
 }
@@ -86,13 +89,13 @@ void ModuleSceneIntro::AddRoad(float length, RoadType road_type, Circuit circuit
 {
 	Cube* road_segment = nullptr;
 
-	if (roads_circuit_1.count() == 0 && circuit == CIRCUIT_1) // First road
+	if (roads_circuit_1.count() == 0 && circuit == CIRCUIT_1) // First road CIRCUIT 1
 	{
 		road_segment = new Cube(ROAD_WIDTH, ROAD_HEIGHT, length);
 		road_segment->SetPos(0.0f, ROAD_HEIGHT / 2.0f, 10.0f);
 		last_road_type = FORWARD_ROAD;
 	}
-	else if (roads_circuit_2.count() == 0 && circuit == CIRCUIT_2)
+	else if (roads_circuit_2.count() == 0 && circuit == CIRCUIT_2) // First road CIRCUIT 2
 	{
 		road_segment = new Cube(length, ROAD_HEIGHT, ROAD_WIDTH);
 		road_segment->SetPos(-21.0f, ROAD_HEIGHT / 2.0f, 31.0f);
@@ -140,6 +143,7 @@ void ModuleSceneIntro::AddRoad(float length, RoadType road_type, Circuit circuit
 			break;
 		}
 	}
+
 	road_segment->color = Grey;
 	App->physics->AddBody(*road_segment, STATIC_MASS);
 
@@ -445,8 +449,7 @@ void ModuleSceneIntro::BuildCircuit_2()
 	AddRoad(10.0f, FORWARD_RAMP, CIRCUIT_2);
 }
 
-
-void ModuleSceneIntro::CreateWalls(Cube * road, vec3 position)
+void ModuleSceneIntro::CreateWalls(Cube * road, vec3 position) // TODO: to be deleted proabably
 {
 	if (road != nullptr)
 	{
@@ -487,4 +490,4 @@ void ModuleSceneIntro::CreateWalls(Cube * road, vec3 position)
 			cube_offset += cube_right->size.z;
 		}
 	}
-}
+} 
