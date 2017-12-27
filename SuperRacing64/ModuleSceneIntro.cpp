@@ -41,6 +41,14 @@ bool ModuleSceneIntro::CleanUp()
 
 	roads_circuit_1.clear();
 
+	for (p2List_item<Cube*>* road_item = roads_circuit_2.getFirst(); road_item; road_item = road_item->next)
+	{
+		delete road_item->data;
+		road_item->data = nullptr;
+	}
+
+	roads_circuit_2.clear();
+
 	// Deleting Walls
 	for (p2List_item<Cube*>* wall_item = walls_list.getFirst(); wall_item; wall_item = wall_item->next)
 	{
