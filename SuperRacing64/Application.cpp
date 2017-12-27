@@ -26,7 +26,7 @@ Application::Application()
 	// Scenes
 	AddModule(scene_intro);
 	AddModule(player);
-	AddModule(player2);
+	//AddModule(player2); uncomment this to spawn the second player
 
 	// Renderer last!
 	AddModule(renderer3D);

@@ -149,6 +149,17 @@ update_status ModulePlayer::Update(float dt)
 			acceleration = BACK_ACCELERATION;
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	{
+		if (vehicle->GetKmh() != 0)
+			acceleration = 0.0f;
+
+		//todo : this pos will change as soon as we make the sensors
+		vehicle->SetPos(0, 12, 0);
+	}
+
+	
+
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
