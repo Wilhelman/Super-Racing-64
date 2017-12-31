@@ -23,6 +23,7 @@ bool ModuleSceneIntro::Start()
 	//Roads
 	BuildCircuit_1();
 	BuildCircuit_2();
+	BuildWalls();
 
 	return ret;
 }
@@ -94,11 +95,11 @@ void ModuleSceneIntro::RenderWalls() const
 		wall_item->data->Render();
 }
 
-void ModuleSceneIntro::AddRoad(float length, ConstructionDirection road_type, ConstructionType construction_type, bool isWall)
+void ModuleSceneIntro::AddConstruction(float length, ConstructionDirection road_type, ConstructionType construction_type, bool isWall)
 {
 	Cube* construction_segment = nullptr;
 
-	if (roads_circuit_1.count() == 0 && construction_type == CIRCUIT_1) // First road CIRCUIT 1
+	if (roads_circuit_1.count() == 0 && (construction_type == CIRCUIT_1 || construction_type == WALLS)) // First road CIRCUIT 1
 	{
 		if (isWall)
 		{
@@ -112,12 +113,13 @@ void ModuleSceneIntro::AddRoad(float length, ConstructionDirection road_type, Co
 		}
 		last_direction = FORWARD_DIRECTION;
 	}
-	else if (roads_circuit_2.count() == 0 && construction_type == CIRCUIT_2) // First road CIRCUIT 2
+	else if ((roads_circuit_2.count() == 0 && construction_type == CIRCUIT_2) 
+			|| (walls_list.count() == 0 && construction_type == WALLS)) // First road CIRCUIT 2
 	{
 		if (isWall)
 		{
 			construction_segment = new Cube(length, WALL_HEIGHT, WALL_WIDTH);
-			construction_segment->SetPos(-21.0f, WALL_HEIGHT / 2.0f, 31.0f);
+			construction_segment->SetPos(-21.0f - WALL_WIDTH, WALL_HEIGHT / 2.0f + + ROAD_HEIGHT / 2, 31.0f + ROAD_WIDTH / 2 + WALL_WIDTH / 2);
 		}
 		else
 		{
@@ -132,8 +134,10 @@ void ModuleSceneIntro::AddRoad(float length, ConstructionDirection road_type, Co
 
 		if (construction_type == CIRCUIT_1)
 			last_cube = roads_circuit_1.getLast()->data;
-		else
+		else if(construction_type == CIRCUIT_2)
 			last_cube = roads_circuit_2.getLast()->data;
+		else
+			last_cube = walls_list.getLast()->data;
 
 		switch (road_type)
 		{
@@ -187,7 +191,11 @@ void ModuleSceneIntro::AddRoad(float length, ConstructionDirection road_type, Co
 		}
 	}
 
-	construction_segment->color = Grey;
+	if (isWall)
+		construction_segment->color = Red;
+	else
+		construction_segment->color = Grey;
+	
 	App->physics->AddBody(*construction_segment, STATIC_MASS);
 
 	if (construction_type == CIRCUIT_1)
@@ -227,8 +235,6 @@ Cube * ModuleSceneIntro::BuildForward(Cube* last_cube, float length, bool isWall
 
 	return construction_segment;
 }
-
-
 
 Cube * ModuleSceneIntro::BuildBackward(Cube * last_cube, float length, bool isWall)
 {
@@ -400,42 +406,51 @@ Cube * ModuleSceneIntro::BuildRightRamp(Cube * last_cube, float length, vec3 axi
 
 void ModuleSceneIntro::BuildCircuit_1()
 {
-	AddRoad(32.0f, FORWARD_DIRECTION, CIRCUIT_1);
-	AddRoad(64.0f, LEFT_DIRECTION, CIRCUIT_1);
-	AddRoad(40.0f, FORWARD_DIRECTION, CIRCUIT_1);
-	AddRoad(104.0f, LEFT_DIRECTION, CIRCUIT_1);
-	AddRoad(80.0f, BACKWARD_DIRECTION, CIRCUIT_1);
-	AddRoad(54.0f, RIGHT_DIRECTION, CIRCUIT_1);
-	AddRoad(32.0f, FORWARD_DIRECTION, CIRCUIT_1);
-	AddRoad(48.0f, RIGHT_DIRECTION, CIRCUIT_1);
-	AddRoad(24.0f, BACKWARD_RAMP, CIRCUIT_1);
-	AddRoad(40.0f, BACKWARD_DIRECTION, CIRCUIT_1);
-	AddRoad(24.0f, FORWARD_RAMP, CIRCUIT_1);
-	AddRoad(16.0F, BACKWARD_DIRECTION, CIRCUIT_1);
-	AddRoad(88.0f, LEFT_DIRECTION, CIRCUIT_1);
-	AddRoad(38.0f, FORWARD_DIRECTION, CIRCUIT_1);
-	AddRoad(184.0f, RIGHT_DIRECTION, CIRCUIT_1);
-	AddRoad(24.6f, FORWARD_DIRECTION, CIRCUIT_1);
+	AddConstruction(32.0f, FORWARD_DIRECTION, CIRCUIT_1);
+	AddConstruction(64.0f, LEFT_DIRECTION, CIRCUIT_1);
+	AddConstruction(40.0f, FORWARD_DIRECTION, CIRCUIT_1);
+	AddConstruction(104.0f, LEFT_DIRECTION, CIRCUIT_1);
+	AddConstruction(80.0f, BACKWARD_DIRECTION, CIRCUIT_1);
+	AddConstruction(54.0f, RIGHT_DIRECTION, CIRCUIT_1);
+	AddConstruction(32.0f, FORWARD_DIRECTION, CIRCUIT_1);
+	AddConstruction(48.0f, RIGHT_DIRECTION, CIRCUIT_1);
+	AddConstruction(24.0f, BACKWARD_RAMP, CIRCUIT_1);
+	AddConstruction(40.0f, BACKWARD_DIRECTION, CIRCUIT_1);
+	AddConstruction(24.0f, FORWARD_RAMP, CIRCUIT_1);
+	AddConstruction(16.0F, BACKWARD_DIRECTION, CIRCUIT_1);
+	AddConstruction(88.0f, LEFT_DIRECTION, CIRCUIT_1);
+	AddConstruction(38.0f, FORWARD_DIRECTION, CIRCUIT_1);
+	AddConstruction(184.0f, RIGHT_DIRECTION, CIRCUIT_1);
+	AddConstruction(24.6f, FORWARD_DIRECTION, CIRCUIT_1);
 }
 
 void ModuleSceneIntro::BuildCircuit_2()
 {
-	AddRoad(32.0f, RIGHT_DIRECTION, CIRCUIT_2);
-	AddRoad(32.0f, BACKWARD_DIRECTION, CIRCUIT_2);
-	AddRoad(24.0f, BACKWARD_RAMP, CIRCUIT_2);
-	AddRoad(48.0f, BACKWARD_DIRECTION, CIRCUIT_2);
-	AddRoad(40.0f, RIGHT_DIRECTION, CIRCUIT_2);
-	AddRoad(48.0f, BACKWARD_DIRECTION, CIRCUIT_2);
-	AddRoad(96.0f, LEFT_DIRECTION, CIRCUIT_2);
-	AddRoad(24.0f, BACKWARD_DIRECTION, CIRCUIT_2);
-	AddRoad(140.0f, LEFT_DIRECTION, CIRCUIT_2);
-	AddRoad(85.0f, FORWARD_DIRECTION, CIRCUIT_2);
+	AddConstruction(32.0f, RIGHT_DIRECTION, CIRCUIT_2);
+	AddConstruction(32.0f, BACKWARD_DIRECTION, CIRCUIT_2);
+	AddConstruction(24.0f, BACKWARD_RAMP, CIRCUIT_2);
+	AddConstruction(48.0f, BACKWARD_DIRECTION, CIRCUIT_2);
+	AddConstruction(40.0f, RIGHT_DIRECTION, CIRCUIT_2);
+	AddConstruction(48.0f, BACKWARD_DIRECTION, CIRCUIT_2);
+	AddConstruction(96.0f, LEFT_DIRECTION, CIRCUIT_2);
+	AddConstruction(24.0f, BACKWARD_DIRECTION, CIRCUIT_2);
+	AddConstruction(140.0f, LEFT_DIRECTION, CIRCUIT_2);
+	AddConstruction(85.0f, FORWARD_DIRECTION, CIRCUIT_2);
 	//AddRoad(10.0f, FORWARD_RAMP, CIRCUIT_2);
 }
 
 void ModuleSceneIntro::BuildWalls()
 {
-
+	AddConstruction(32.0f, RIGHT_DIRECTION, WALLS, true);
+	AddConstruction(32.0f + ROAD_WIDTH, BACKWARD_DIRECTION, WALLS,  true);
+	AddConstruction(24.0f - WALL_WIDTH, BACKWARD_RAMP, WALLS, true);
+	AddConstruction(48.0f, BACKWARD_DIRECTION, WALLS, true);
+	AddConstruction(40.0f - ROAD_WIDTH, RIGHT_DIRECTION, WALLS, true);
+	AddConstruction(48.0f + 2*ROAD_WIDTH, BACKWARD_DIRECTION, WALLS, true);
+	AddConstruction(96.0f, LEFT_DIRECTION, WALLS, true);
+	AddConstruction(24.0f, BACKWARD_DIRECTION, WALLS, true);
+	AddConstruction(140.0f + ROAD_WIDTH, LEFT_DIRECTION, WALLS, true);
+	AddConstruction(85.0f + WALL_WIDTH, FORWARD_DIRECTION, WALLS, true);
 }
 
 void ModuleSceneIntro::CreateWalls(Cube * road, vec3 position) // TODO: to be deleted proabably
