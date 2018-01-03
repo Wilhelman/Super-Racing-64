@@ -82,16 +82,12 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
-	if (body1->type == VEHICLE1)
+	if (body1 == start_sensor)
 	{
-		if (body2 == bs && App->player->add_lap)
+		if (body2->type == PLAYER_01)
 		{
-			App->player->start_timer = true;
-			App->player->add_lap = false;
+			LOG("mimimimi");
 		}
-
-		if (body2 == es)
-			App->player->add_lap = true;
 	}
 }
 

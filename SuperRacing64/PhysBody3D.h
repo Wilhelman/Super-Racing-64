@@ -3,6 +3,13 @@
 
 #include "p2List.h"
 
+enum body_type
+{
+	PLAYER_01,
+	PLAYER_02,
+	NO_DEF
+};
+
 class btRigidBody;
 class Module;
 
@@ -27,6 +34,7 @@ private:
 
 public:
 	p2List<Module*> collision_listeners;
+	body_type type = NO_DEF;
 };
 
 #endif // __PhysBody3D_H__
