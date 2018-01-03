@@ -116,6 +116,49 @@ update_status ModuleCamera3D::Update(float dt)
 	LookAt(vec3(x_value, 1, z_value));
 	*/
 	// Recalculate matrix -------------
+	switch (App->scene_intro->current_players)
+	{
+	case 0: {
+		if (going_left)
+		{
+			if (x < 100)
+				x += 0.20f;
+			else
+				going_left = false;
+		}
+		else
+		{
+			if (x > 35)
+				x -= 0.20f;
+			else
+				going_left = true;
+		}
+
+		Position = { x, 120, -250 };
+		LookAt(vec3(x, -100, 50));
+
+		break;
+	}
+	case 1: {
+		Position.x = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getX() - 15 * App->player->vehicle->vehicle->getForwardVector().getX();
+		Position.y = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getY() + 20 * App->player->vehicle->vehicle->getUpAxis();
+		Position.z = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getZ() - 15 * App->player->vehicle->vehicle->getForwardVector().getZ();
+
+		float p_x = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getX() + 10 * App->player->vehicle->vehicle->getForwardVector().getX();
+		float p_z = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getZ() + 10 * App->player->vehicle->vehicle->getForwardVector().getZ();
+		LookAt(vec3(p_x, 1, p_z));
+		break;
+	}
+	case 2: {
+		Position = { 107, 210, -80 };
+		LookAt(vec3(107, 0, 60));
+		break;
+	}
+	default:
+		break;
+	}
+
+
 	CalculateViewMatrix();
 	
 	return UPDATE_CONTINUE;

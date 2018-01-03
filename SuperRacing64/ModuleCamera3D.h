@@ -28,5 +28,8 @@ public:
 
 private:
 
+	float x = 0;
+	bool going_left = true;
+
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 };
