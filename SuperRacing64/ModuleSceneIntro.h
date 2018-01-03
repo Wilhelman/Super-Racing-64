@@ -6,8 +6,8 @@
 
 #define ROAD_HEIGHT 1.0f
 #define ROAD_WIDTH 10.0f
-#define WALL_WIDTH 1.0f
-#define WALL_HEIGHT 3.0F
+#define WALL_WIDTH 3.0f
+#define WALL_HEIGHT 3.0f
 
 #define STATIC_MASS 0.0f
 
@@ -55,7 +55,7 @@ public:
 
 
 	void CreateWalls(Cube* road, vec3 position);
-	void AddConstruction(float length, ConstructionDirection road_type, ConstructionType construction_type, bool isWall = false);
+	void AddRoad(float length, ConstructionDirection road_type, ConstructionType construction_type, bool isWall = false);
 
 	Cube* BuildForward(Cube* last_cube, float length, bool isWall = false);
 	Cube* BuildBackward(Cube* last_cube, float length, bool isWall = false);
