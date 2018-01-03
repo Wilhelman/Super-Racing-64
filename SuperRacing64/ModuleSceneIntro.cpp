@@ -32,7 +32,7 @@ bool ModuleSceneIntro::Start()
 	// Creating sensor beginning
 	Cube b_sensor(10, 2, 1);
 	b_sensor.SetPos(0, 2, 0);
-	start_sensor = App->physics->AddBody(b_sensor, App->scene_intro, true, 0);
+	start_sensor = App->physics->AddBody(b_sensor, App->scene_intro, true, STATIC_MASS);
 
 	return ret;
 }
@@ -89,8 +89,9 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1 == start_sensor)
 	{
-		if (body2->type == PLAYER_01)
+		if (body2->type == PLAYER_01 && App->player->last_sensor != body1) // TODO: check num sensor
 		{
+			App->player->last_sensor = body1;
 			LOG("mimimimi");
 		}
 	}

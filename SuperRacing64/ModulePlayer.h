@@ -26,8 +26,12 @@ public:
 	int laps = 2;
 	Timer p_timer;
 
-	PhysVehicle3D* vehicle;
-	float turn;
-	float acceleration;
-	float brake;
+	PhysVehicle3D* vehicle = nullptr;
+	float turn = 0.0f;
+	float acceleration = 0.0f;
+	float brake = 0.0f;
+
+	uint acceleration_fx = 0u;
+
+	bool p1_running = false;
 };

@@ -104,8 +104,6 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	
 	/*
-	
-	
 	Position.x = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getX() - X_CAM_OFFSET * App->player->vehicle->vehicle->getForwardVector().getX();
 	Position.y = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getY() + Y_CAM_OFFSET * App->player->vehicle->vehicle->getUpAxis();
 	Position.z = App->player->vehicle->vehicle->getChassisWorldTransform().getOrigin().getZ() - Z_CAM_OFFSET * App->player->vehicle->vehicle->getForwardVector().getZ();
@@ -115,8 +113,10 @@ update_status ModuleCamera3D::Update(float dt)
 
 	LookAt(vec3(x_value, 1, z_value));
 	*/
+
+
 	// Recalculate matrix -------------
-	switch (App->scene_intro->current_players)
+/*	switch (App->scene_intro->current_players)
 	{
 	case 0: {
 		if (going_left)
@@ -156,7 +156,7 @@ update_status ModuleCamera3D::Update(float dt)
 	}
 	default:
 		break;
-	}
+	}*/
 
 
 	CalculateViewMatrix();

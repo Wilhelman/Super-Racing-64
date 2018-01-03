@@ -19,6 +19,8 @@ bool ModulePlayer::Start()
 {
 	LOG("Loading player");
 
+	acceleration_fx = App->audio->LoadFx("audio/fx/car_engine.wav");
+
 	VehicleInfo car;
 
 	// Car properties ----------------------------------------
@@ -117,6 +119,7 @@ bool ModulePlayer::Start()
 bool ModulePlayer::CleanUp()
 {
 	LOG("Unloading player");
+	
 
 	return true;
 }
@@ -126,10 +129,20 @@ update_status ModulePlayer::Update(float dt)
 {
 	turn = acceleration = brake = 0.0f;
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 	{
 		acceleration = MAX_ACCELERATION;
+		p1_running = true;
 	}
+	
+	//if (vehicle->GetKmh() > 5.0f && p1_running)
+		//App->audio->PlayFx(acceleration_fx);
+	//else
+		//App->audio->StopMusic();
+
+	p1_running = false;
+
+
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
