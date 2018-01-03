@@ -6,8 +6,6 @@
 
 #define ROAD_HEIGHT 1.0f
 #define ROAD_WIDTH 10.0f
-#define WALL_WIDTH 3.0f
-#define WALL_HEIGHT 3.0f
 
 #define STATIC_MASS 0.0f
 
@@ -18,25 +16,24 @@
 struct PhysBody3D;
 struct PhysMotor3D;
 
-enum ConstructionDirection
+enum RoadType
 {
-	FORWARD_DIRECTION,
-	BACKWARD_DIRECTION,
-	RIGHT_DIRECTION,
-	LEFT_DIRECTION,
+	FORWARD_ROAD,
+	BACKWARD_ROAD,
+	RIGHT_ROAD,
+	LEFT_ROAD,
 	FORWARD_RAMP,
 	BACKWARD_RAMP,
 	RIGHT_RAMP,
 	LEFT_RAMP,
 
-	DIRECTION_NOT_DEF
+	ROAD_NOT_DEF
 };
 
-enum ConstructionType
+enum Circuit
 {
 	CIRCUIT_1,
 	CIRCUIT_2,
-	WALLS,
 
 	CIRCUIT_NOT_DEF
 };
@@ -55,20 +52,19 @@ public:
 
 
 	void CreateWalls(Cube* road, vec3 position);
-	void AddRoad(float length, ConstructionDirection road_type, ConstructionType construction_type, bool isWall = false);
 
-	Cube* BuildForward(Cube* last_cube, float length, bool isWall = false);
-	Cube* BuildBackward(Cube* last_cube, float length, bool isWall = false);
-	Cube* BuildLeft(Cube* last_cube, float length, bool isWall = false);
-	Cube* BuildRight(Cube* last_cube, float length, bool isWall = false);
-	Cube* BuildForwardRamp(Cube* last_cube, float length, vec3 axis, bool isWall = false);
-	Cube* BuildBackwardRamp(Cube* last_cube, float length, vec3 axis, bool isWall = false);
-	//Cube* BuildLeftRamp(Cube* last_cube, float length, vec3 axis, bool isWall = false);
-	//Cube* BuildRightRamp(Cube* last_cube, float length, vec3 axis, bool isWall = false);
+	void AddRoad(float length, RoadType road_type, Circuit circuit);
+	Cube* BuildForawardRoad(Cube* last_cube, float length);
+	Cube* BuildBackwardRoad(Cube* last_cube, float length);
+	Cube* BuildLeftRoad(Cube* last_cube, float length);
+	Cube* BuildRightRoad(Cube* last_cube, float length);
+	Cube* BuildForwardRamp(Cube* last_cube, float length, vec3 axis);
+	Cube* BuildBackwardRamp(Cube* last_cube, float length, vec3 axis);
+	Cube* BuildLeftRamp(Cube* last_cube, float length, vec3 axis);
+	Cube* BuildRightRamp(Cube* last_cube, float length, vec3 axis);
 
 	void BuildCircuit_1();
 	void BuildCircuit_2();
-	void BuildWalls();
 
 	void RenderRoads() const;
 	void RenderWalls() const;
@@ -94,5 +90,5 @@ public:
 	//Walls
 	p2List<Cube*> walls_list;
 
-	ConstructionDirection last_direction = DIRECTION_NOT_DEF;
+	RoadType last_road_type = ROAD_NOT_DEF;
 };
