@@ -26,10 +26,13 @@ Application::Application()
 	// Scenes
 	AddModule(scene_intro);
 	AddModule(player);
-	//AddModule(player2); uncomment this to spawn the second player
+	AddModule(player2);
 
 	// Renderer last!
 	AddModule(renderer3D);
+
+	//disable zone
+	player2->enabled = false;
 }
 
 Application::~Application()
@@ -50,7 +53,7 @@ bool Application::Init()
 	// Call Init() in all modules
 	p2List_item<Module*>* item = list_modules.getFirst();
 
-	while(item != NULL && ret == true)
+	while(item != NULL && ret == true && item->data->enabled)
 	{
 		ret = item->data->Init();
 		item = item->next;
@@ -60,7 +63,7 @@ bool Application::Init()
 	LOG("Application Start --------------");
 	item = list_modules.getFirst();
 
-	while(item != NULL && ret == true)
+	while(item != NULL && ret == true && item->data->enabled)
 	{
 		ret = item->data->Start();
 		item = item->next;
@@ -90,7 +93,7 @@ update_status Application::Update()
 	
 	p2List_item<Module*>* item = list_modules.getFirst();
 	
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	while(item != NULL && ret == UPDATE_CONTINUE && item->data->enabled)
 	{
 		ret = item->data->PreUpdate(dt);
 		item = item->next;
@@ -98,7 +101,7 @@ update_status Application::Update()
 
 	item = list_modules.getFirst();
 
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	while(item != NULL && ret == UPDATE_CONTINUE && item->data->enabled)
 	{
 		ret = item->data->Update(dt);
 		item = item->next;
@@ -106,7 +109,7 @@ update_status Application::Update()
 
 	item = list_modules.getFirst();
 
-	while(item != NULL && ret == UPDATE_CONTINUE)
+	while(item != NULL && ret == UPDATE_CONTINUE && item->data->enabled)
 	{
 		ret = item->data->PostUpdate(dt);
 		item = item->next;

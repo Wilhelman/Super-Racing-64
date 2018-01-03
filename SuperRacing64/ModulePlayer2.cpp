@@ -8,6 +8,7 @@
 ModulePlayer2::ModulePlayer2(Application* app, bool start_enabled) : Module(app, start_enabled), vehicle(NULL)
 {
 	turn = acceleration = brake = 0.0f;
+	enabled = true;
 }
 
 ModulePlayer2::~ModulePlayer2()
@@ -106,6 +107,7 @@ bool ModulePlayer2::Start()
 	car.wheels[3].steering = false;
 
 	vehicle = App->physics->AddVehicle(car);
+	vehicle->type = PLAYER_02;
 	vehicle->SetPos(0, 12, 0);
 
 	return true;

@@ -71,6 +71,8 @@ public:
 
 public:
 
+	int current_players = 0;
+
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
 

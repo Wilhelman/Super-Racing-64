@@ -24,6 +24,7 @@ ModulePhysics3D::ModulePhysics3D(Application* app, bool start_enabled) : Module(
 	broad_phase = new btDbvtBroadphase();
 	solver = new btSequentialImpulseConstraintSolver();
 	debug_draw = new DebugDrawer();
+	enabled = true;
 }
 
 // Destructor
