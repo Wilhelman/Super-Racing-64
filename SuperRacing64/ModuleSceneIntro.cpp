@@ -19,7 +19,7 @@ bool ModuleSceneIntro::Start()
 	bool ret = true;
 
 	if (!App->audio->PlayMusic("audio/music/07_Mario_Circuit.ogg"))
-		LOG("Error playing music in j1Credits Start");
+		LOG("Error playing music in ModuleSceneIntro Start");
 	
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
@@ -29,10 +29,22 @@ bool ModuleSceneIntro::Start()
 	BuildCircuit_1();
 	BuildCircuit_2();
 
-	// Creating sensor beginning
-	Cube b_sensor(10, 2, 1);
-	b_sensor.SetPos(0, 2, 0);
-	start_sensor = App->physics->AddBody(b_sensor, App->scene_intro, true, STATIC_MASS);
+	// Sensors circuit 1 -------------
+	Cube cube_sensor_c11(10.0f, 2.0f, 1.0f);
+	cube_sensor_c11.SetPos(0.0f, 2.0f, 0.0f);
+	start_sensor = App->physics->AddBody(cube_sensor_c11, App->scene_intro, true, STATIC_MASS);
+
+	Cube cube_sensor_c12(1.0f, 2.0f, 10.0f);
+	cube_sensor_c12.SetPos(70.0f, 2.0f, 71.0f);
+	second_sensor_c1 = App->physics->AddBody(cube_sensor_c12, App->scene_intro, true, STATIC_MASS);
+
+	Cube cube_sensor_c13(10.0f, 2.0f, 1.0f);
+	cube_sensor_c13.SetPos(86.0f, 13.5f, -12.588f);
+	third_sensor_c1 = App->physics->AddBody(cube_sensor_c13, App->scene_intro, true, STATIC_MASS);
+
+	Cube cube_sensor_c14(1.0f, 2.0f, 10.0f);
+	cube_sensor_c14.SetPos(125.0f, 1.5f, -73.588f);
+	fourth_sensor_c1 = App->physics->AddBody(cube_sensor_c14, App->scene_intro, true, STATIC_MASS);
 
 	return ret;
 }
@@ -89,12 +101,21 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1 == start_sensor)
 	{
-		if (body2->type == PLAYER_01 && App->player->last_sensor != body1) // TODO: check num sensor
+		if (body2->type == PLAYER_01 && App->player->last_sensor == second_sensor_c1) // TODO: check num sensor
 		{
 			App->player->last_sensor = body1;
-			LOG("mimimimi");
+			LOG("Sensor 1");
 		}
 	}
+	else if (body1 == second_sensor_c1)
+	{
+		if (body2->type == PLAYER_01)
+		{
+			App->player->last_sensor = body1;
+			LOG("Sensor 2");
+		}
+	}
+	
 }
 
 void ModuleSceneIntro::RenderRoads() const

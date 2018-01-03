@@ -143,7 +143,6 @@ update_status ModulePlayer::Update(float dt)
 	p1_running = false;
 
 
-
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
 		if(turn < TURN_DEGREES)

@@ -95,5 +95,9 @@ public:
 	RoadType last_road_type = ROAD_NOT_DEF;
 
 	//sensors
-	PhysBody3D* start_sensor;
+	PhysBody3D* start_sensor = nullptr;
+	PhysBody3D* second_sensor_c1 = nullptr;
+	PhysBody3D* third_sensor_c1 = nullptr;
+	PhysBody3D* fourth_sensor_c1 = nullptr;
+
 };
