@@ -53,7 +53,7 @@ bool Application::Init()
 	// Call Init() in all modules
 	p2List_item<Module*>* item = list_modules.getFirst();
 
-	while(item != NULL && ret == true && item->data->enabled)
+	while(item != NULL && ret == true)
 	{
 		ret = item->data->Init();
 		item = item->next;
@@ -63,7 +63,7 @@ bool Application::Init()
 	LOG("Application Start --------------");
 	item = list_modules.getFirst();
 
-	while(item != NULL && ret == true && item->data->enabled)
+	while(item != NULL && ret == true)
 	{
 		ret = item->data->Start();
 		item = item->next;
@@ -93,7 +93,7 @@ update_status Application::Update()
 	
 	p2List_item<Module*>* item = list_modules.getFirst();
 	
-	while(item != NULL && ret == UPDATE_CONTINUE && item->data->enabled)
+	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
 		ret = item->data->PreUpdate(dt);
 		item = item->next;
@@ -101,7 +101,7 @@ update_status Application::Update()
 
 	item = list_modules.getFirst();
 
-	while(item != NULL && ret == UPDATE_CONTINUE && item->data->enabled)
+	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
 		ret = item->data->Update(dt);
 		item = item->next;
@@ -109,7 +109,7 @@ update_status Application::Update()
 
 	item = list_modules.getFirst();
 
-	while(item != NULL && ret == UPDATE_CONTINUE && item->data->enabled)
+	while(item != NULL && ret == UPDATE_CONTINUE)
 	{
 		ret = item->data->PostUpdate(dt);
 		item = item->next;
