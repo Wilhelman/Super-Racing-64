@@ -91,4 +91,7 @@ public:
 	p2List<Cube*> walls_list;
 
 	RoadType last_road_type = ROAD_NOT_DEF;
+
+	//sensors
+	PhysBody3D* start_sensor;
 };

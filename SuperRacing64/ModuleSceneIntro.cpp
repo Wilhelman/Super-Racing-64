@@ -24,6 +24,11 @@ bool ModuleSceneIntro::Start()
 	BuildCircuit_1();
 	BuildCircuit_2();
 
+	// Creating sensor beginning
+	Cube b_sensor(10, 2, 1);
+	b_sensor.SetPos(0, 2, 0);
+	start_sensor = App->physics->AddBody(b_sensor, App->scene_intro, true, 0);
+
 	return ret;
 }
 
@@ -77,6 +82,17 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
+	if (body1->type == VEHICLE1)
+	{
+		if (body2 == bs && App->player->add_lap)
+		{
+			App->player->start_timer = true;
+			App->player->add_lap = false;
+		}
+
+		if (body2 == es)
+			App->player->add_lap = true;
+	}
 }
 
 void ModuleSceneIntro::RenderRoads() const
