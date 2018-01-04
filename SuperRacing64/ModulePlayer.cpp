@@ -142,7 +142,6 @@ update_status ModulePlayer::Update(float dt)
 
 	p1_running = false;
 
-
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 	{
 		if(turn < TURN_DEGREES)
@@ -163,10 +162,9 @@ update_status ModulePlayer::Update(float dt)
 			acceleration = BACK_ACCELERATION;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
 	{
-		if (vehicle->GetKmh() != 0)
-			acceleration = 0.0f;
+		this->ResetVehicle();
 
 		//todo : this pos will change as soon as we make the sensors
 		vehicle->SetPos(0, 12, 0);
@@ -185,4 +183,12 @@ update_status ModulePlayer::Update(float dt)
 	App->window->SetTitle(title);*/
 
 	return UPDATE_CONTINUE;
+}
+
+
+void ModulePlayer::ResetVehicle() {
+	//TODO POS IN LAST SENSOR
+	vehicle->vehicle->getRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
+	vehicle->vehicle->getRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
+	vehicle->SetTransform(IdentityMatrix.M);
 }
