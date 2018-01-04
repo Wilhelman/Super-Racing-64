@@ -123,10 +123,13 @@ update_status ModuleSceneIntro::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && current_players == 0)
 	{
 		current_players = 1;
+		App->player->laps = 2;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && current_players == 0)
 	{
 		current_players = 2;
+		App->player->laps = 2;
+		App->player2->laps = 2;
 	}
 
 	return UPDATE_CONTINUE;
