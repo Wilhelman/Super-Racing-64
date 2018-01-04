@@ -3,6 +3,7 @@
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
 #include "PhysBody3D.h"
+#include "PhysVehicle3D.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -94,6 +95,40 @@ update_status ModuleSceneIntro::Update(float dt)
 	RenderRoads();
 	RenderWalls();
 
+	//main menu settings
+
+	
+
+	switch (current_players)
+	{
+	case 0:
+		char title[80];
+		sprintf_s(title, "Press 1 -> ONE PLAYER MODE | Press 2 -> TWO PLAYER MODE | ESC -> QUIT GAME");
+		App->window->SetTitle(title);
+		break;
+	case 1:
+		char title2[250];
+		sprintf_s(title2, "%.1f Km/h | Remaining laps: %i | Last time: TODO: HACER TIMER c: | Enter to respawn", App->player->vehicle->GetKmh(), App->player->laps);
+		App->window->SetTitle(title2);
+		break;
+	case 2:
+		char title3[250];
+		sprintf_s(title3, "Player 1 - Remaining laps: %i - Last time: todo | Player 2 - Remaining laps: %i - Last time: todo",App->player->laps, App->player2->laps);
+		App->window->SetTitle(title3);
+		break;
+	default:
+		break;
+	}
+	
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && current_players == 0)
+	{
+		current_players = 1;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && current_players == 0)
+	{
+		current_players = 2;
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -107,7 +142,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 			LOG("Sensor 1");
 		}
 	}
-	else if (body1 == second_sensor_c1 && App->player->last_sensor == start_sensor)
+	else if (body1 == second_sensor_c1 && (App->player->last_sensor == start_sensor || App->player->last_sensor == nullptr))
 	{
 		if (body2->type == PLAYER_01)
 		{

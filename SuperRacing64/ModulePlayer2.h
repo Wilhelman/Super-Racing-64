@@ -22,7 +22,9 @@ public:
 
 public:
 
-
+	PhysBody3D* last_sensor = nullptr;
+	int laps = 2;
+	Timer p_timer;
 
 	PhysVehicle3D* vehicle;
 	float turn;
