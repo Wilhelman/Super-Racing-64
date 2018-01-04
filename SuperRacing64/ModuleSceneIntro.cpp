@@ -99,9 +99,9 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
-	if (body1 == start_sensor)
+	if (body1 == start_sensor && App->player->last_sensor == fourth_sensor_c1 && App->player->last_sensor != nullptr)
 	{
-		if (body2->type == PLAYER_01 && App->player->last_sensor == fourth_sensor_c1 && App->player->last_sensor != nullptr) // TODO: check num sensor
+		if (body2->type == PLAYER_01)
 		{
 			App->player->last_sensor = body1;
 			LOG("Sensor 1");
