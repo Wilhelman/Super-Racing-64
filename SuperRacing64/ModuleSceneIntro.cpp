@@ -35,18 +35,22 @@ bool ModuleSceneIntro::Start()
 	Cube cube_sensor_c11(10.0f, 2.0f, 1.0f);
 	cube_sensor_c11.SetPos(0.0f, 2.0f, 0.0f);
 	start_sensor = App->physics->AddBody(cube_sensor_c11, App->scene_intro, true, STATIC_MASS);
+	start_sensor->SetPos(cube_sensor_c11.GetPos().x, cube_sensor_c11.GetPos().y, cube_sensor_c11.GetPos().z);
 
 	Cube cube_sensor_c12(1.0f, 2.0f, 10.0f);
 	cube_sensor_c12.SetPos(70.0f, 2.0f, 71.0f);
 	second_sensor_c1 = App->physics->AddBody(cube_sensor_c12, App->scene_intro, true, STATIC_MASS);
+	second_sensor_c1->SetPos(cube_sensor_c12.GetPos().x, cube_sensor_c12.GetPos().y, cube_sensor_c12.GetPos().z);
 
 	Cube cube_sensor_c13(10.0f, 2.0f, 1.0f);
 	cube_sensor_c13.SetPos(86.0f, 13.5f, -12.588f);
 	third_sensor_c1 = App->physics->AddBody(cube_sensor_c13, App->scene_intro, true, STATIC_MASS);
+	third_sensor_c1->SetPos(cube_sensor_c13.GetPos().x, cube_sensor_c13.GetPos().y, cube_sensor_c13.GetPos().z);
 
 	Cube cube_sensor_c14(1.0f, 2.0f, 10.0f);
 	cube_sensor_c14.SetPos(125.0f, 1.5f, -73.588f);
 	fourth_sensor_c1 = App->physics->AddBody(cube_sensor_c14, App->scene_intro, true, STATIC_MASS);
+	fourth_sensor_c1->SetPos(cube_sensor_c14.GetPos().x, cube_sensor_c14.GetPos().y, cube_sensor_c14.GetPos().z);
 
 	return ret;
 }
