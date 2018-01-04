@@ -4,6 +4,7 @@
 #include "Primitive.h"
 #include "PhysVehicle3D.h"
 #include "PhysBody3D.h"
+#include "ModuleSceneIntro.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled), vehicle(NULL)
 {
@@ -167,7 +168,9 @@ update_status ModulePlayer::Update(float dt)
 		this->ResetVehicle();
 
 		//todo : this pos will change as soon as we make the sensors
-		vehicle->SetPos(0, 12, 0);
+
+
+		
 	}
 
 	
@@ -186,9 +189,32 @@ update_status ModulePlayer::Update(float dt)
 }
 
 
-void ModulePlayer::ResetVehicle() {
-	//TODO POS IN LAST SENSOR
+void ModulePlayer::ResetVehicle() 
+{
 	vehicle->vehicle->getRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
 	vehicle->vehicle->getRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
-	vehicle->SetTransform(IdentityMatrix.M);
+	
+	mat4x4 NinetyDegCCwise_mat = mat4x4(
+		0.0f, 0.0f, -1.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f);
+
+	mat4x4 MidTurnDegCCwise_mat = mat4x4(
+		-1.0f, 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f, 0.0f, 0.0f,
+		0.0f, 0.0f, -1.0f, 0.0f,
+		0.0f, 0.0f, 0.0f, 1.0f);
+
+	if (last_sensor == App->scene_intro->second_sensor_c1 || last_sensor == App->scene_intro->fourth_sensor_c1)
+		vehicle->SetTransform(NinetyDegCCwise_mat.M);
+	else if (last_sensor == App->scene_intro->third_sensor_c1)
+		vehicle->SetTransform(MidTurnDegCCwise_mat.M);
+	else
+	{
+		vehicle->SetTransform(IdentityMatrix.M);
+		vehicle->SetPos(0, 12, 0);
+		return;
+	}
+	vehicle->SetPos(last_sensor->GetPos().x, last_sensor->GetPos().y, last_sensor->GetPos().z);
 }
