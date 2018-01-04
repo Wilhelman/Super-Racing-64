@@ -101,18 +101,34 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	if (body1 == start_sensor)
 	{
-		if (body2->type == PLAYER_01 && App->player->last_sensor == second_sensor_c1) // TODO: check num sensor
+		if (body2->type == PLAYER_01 && App->player->last_sensor == fourth_sensor_c1 && App->player->last_sensor != nullptr) // TODO: check num sensor
 		{
 			App->player->last_sensor = body1;
 			LOG("Sensor 1");
 		}
 	}
-	else if (body1 == second_sensor_c1)
+	else if (body1 == second_sensor_c1 && App->player->last_sensor == start_sensor)
 	{
 		if (body2->type == PLAYER_01)
 		{
 			App->player->last_sensor = body1;
 			LOG("Sensor 2");
+		}
+	}
+	else if (body1 == third_sensor_c1 && App->player->last_sensor == second_sensor_c1)
+	{
+		if (body2->type == PLAYER_01)
+		{
+			App->player->last_sensor = body1;
+			LOG("Sensor 3");
+		}
+	}
+	else if (body1 == fourth_sensor_c1 && App->player->last_sensor == third_sensor_c1)
+	{
+		if (body2->type == PLAYER_01)
+		{
+			App->player->last_sensor = body1;
+			LOG("Sensor 4");
 		}
 	}
 	
