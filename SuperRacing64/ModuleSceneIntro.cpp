@@ -139,7 +139,9 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		if (body2->type == PLAYER_01)
 		{
 			App->player->last_sensor = body1;
-			LOG("Sensor 1");
+			App->player->laps--;
+			if (App->player->laps == 0)
+				current_players = 0;
 		}
 	}
 	else if (body1 == second_sensor_c1 && (App->player->last_sensor == start_sensor || App->player->last_sensor == nullptr))
