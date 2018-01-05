@@ -50,7 +50,6 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
-
 	void CreateWalls(Cube* road, vec3 position);
 
 	void AddRoad(float length, RoadType road_type, Circuit circuit);
@@ -70,7 +69,6 @@ public:
 	void RenderWalls() const;
 
 public:
-
 	int current_players = 0;
 
 	PhysBody3D* pb_chassis;
@@ -94,10 +92,16 @@ public:
 
 	RoadType last_road_type = ROAD_NOT_DEF;
 
-	//sensors
+	//Start sensor
 	PhysBody3D* start_sensor = nullptr;
+
+	//Sensors circuit 1
 	PhysBody3D* second_sensor_c1 = nullptr;
 	PhysBody3D* third_sensor_c1 = nullptr;
 	PhysBody3D* fourth_sensor_c1 = nullptr;
 
+	//Sensor circuit 2
+	PhysBody3D* second_sensor_c2 = nullptr;
+	PhysBody3D* third_sensor_c2 = nullptr;
+	PhysBody3D* fourth_sensor_c2 = nullptr;
 };

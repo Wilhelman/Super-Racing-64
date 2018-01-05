@@ -31,12 +31,13 @@ bool ModuleSceneIntro::Start()
 	BuildCircuit_1();
 	BuildCircuit_2();
 
-	// Sensors circuit 1 -------------
+	// Start sensor -----------------
 	Cube cube_sensor_c11(10.0f, 2.0f, 1.0f);
 	cube_sensor_c11.SetPos(0.0f, 2.0f, 0.0f);
 	start_sensor = App->physics->AddBody(cube_sensor_c11, App->scene_intro, true, STATIC_MASS);
 	start_sensor->SetPos(cube_sensor_c11.GetPos().x, cube_sensor_c11.GetPos().y, cube_sensor_c11.GetPos().z);
-
+	
+	// Sensors circuit 1 -------------
 	Cube cube_sensor_c12(1.0f, 2.0f, 10.0f);
 	cube_sensor_c12.SetPos(70.0f, 2.0f, 71.0f);
 	second_sensor_c1 = App->physics->AddBody(cube_sensor_c12, App->scene_intro, true, STATIC_MASS);
@@ -51,6 +52,22 @@ bool ModuleSceneIntro::Start()
 	cube_sensor_c14.SetPos(125.0f, 1.5f, -73.588f);
 	fourth_sensor_c1 = App->physics->AddBody(cube_sensor_c14, App->scene_intro, true, STATIC_MASS);
 	fourth_sensor_c1->SetPos(cube_sensor_c14.GetPos().x, cube_sensor_c14.GetPos().y, cube_sensor_c14.GetPos().z);
+
+	// Sensors circuit 2 -------------
+	Cube cube_sensor_c21(10.0f, 2.0f, 1.0f);
+	cube_sensor_c21.SetPos(-40.0f, 13.5f, -50.58f);
+	second_sensor_c2 = App->physics->AddBody(cube_sensor_c21, App->scene_intro, true, STATIC_MASS);
+	second_sensor_c2->SetPos(cube_sensor_c21.GetPos().x, cube_sensor_c21.GetPos().y, cube_sensor_c21.GetPos().z);
+
+	Cube cube_sensor_c22(10.0f, 2.0f, 1.0f);
+	cube_sensor_c22.SetPos(26.0f, 13.5f, -144.588f);
+	third_sensor_c2 = App->physics->AddBody(cube_sensor_c22, App->scene_intro, true, STATIC_MASS);
+	third_sensor_c2->SetPos(cube_sensor_c22.GetPos().x, cube_sensor_c22.GetPos().y, cube_sensor_c22.GetPos().z);
+
+	Cube cube_sensor_c23(10.0f, 2.0f, 1.0f);
+	cube_sensor_c23.SetPos(176.0f, 13.5f, -136.588f);
+	fourth_sensor_c2 = App->physics->AddBody(cube_sensor_c23, App->scene_intro, true, STATIC_MASS);
+	fourth_sensor_c2->SetPos(cube_sensor_c23.GetPos().x, cube_sensor_c23.GetPos().y, cube_sensor_c23.GetPos().z);
 
 	return ret;
 }
@@ -92,7 +109,7 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
-	Cube ground( 1000, 1, 1000);
+	Cube ground(1000, 1, 1000);
 	ground.axis = true;
 	ground.color = Green;
 	ground.Render();
@@ -101,8 +118,6 @@ update_status ModuleSceneIntro::Update(float dt)
 	RenderWalls();
 
 	//main menu settings
-
-	
 
 	switch (current_players)
 	{
@@ -147,6 +162,8 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
+	// Sensor detection for circuit 1
+
 	if (body1 == start_sensor && App->player->last_sensor == fourth_sensor_c1 && App->player->last_sensor != nullptr)
 	{
 		if (body2->type == PLAYER_01)
@@ -164,7 +181,8 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		{
 			App->player2->last_sensor = body1;
 			App->player2->laps--;
-			if (App->player2->laps == 0) {
+			if (App->player2->laps == 0) 
+			{
 				current_players = 0;
 				App->player2->enabled = false;
 				App->player2->CleanUp();
@@ -174,37 +192,53 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	else if (body1 == second_sensor_c1 && (App->player->last_sensor == start_sensor || App->player->last_sensor == nullptr))
 	{
 		if (body2->type == PLAYER_01)
-		{
 			App->player->last_sensor = body1;
-		}
 		else if (body2->type == PLAYER_02)
-		{
 			App->player2->last_sensor = body1;;
-		}
 	}
 	else if (body1 == third_sensor_c1 && App->player->last_sensor == second_sensor_c1)
 	{
 		if (body2->type == PLAYER_01)
-		{
 			App->player->last_sensor = body1;
-		}
 		else if (body2->type == PLAYER_02)
-		{
 			App->player2->last_sensor = body1;;
-		}
 	}
 	else if (body1 == fourth_sensor_c1 && App->player->last_sensor == third_sensor_c1)
 	{
 		if (body2->type == PLAYER_01)
+			App->player->last_sensor = body1;
+		else if (body2->type == PLAYER_02)
+			App->player2->last_sensor = body1;;
+	}
+
+	// Sensor detection for circuit 2
+
+	if (body1 == start_sensor && App->player->last_sensor == fourth_sensor_c2 && App->player->last_sensor != nullptr)
+	{
+		if (body2->type == PLAYER_01)
 		{
 			App->player->last_sensor = body1;
+			App->player->laps--;
+			if (App->player->laps == 0) {
+				current_players = 0;
+				if (App->player2->enabled) {
+					App->player2->enabled = false;
+					App->player2->CleanUp();
+				}
+			}
 		}
-		else if (body2->type == PLAYER_02)
+		else if (body2->type == PLAYER_02)		//TODO SET LAST WINNER 
 		{
-			App->player2->last_sensor = body1;;
+			App->player2->last_sensor = body1;
+			App->player2->laps--;
+			if (App->player2->laps == 0)
+			{
+				current_players = 0;
+				App->player2->enabled = false;
+				App->player2->CleanUp();
+			}
 		}
 	}
-	
 }
 
 void ModuleSceneIntro::RenderRoads() const
@@ -279,7 +313,6 @@ void ModuleSceneIntro::AddRoad(float length, RoadType road_type, Circuit circuit
 			break;
 		}
 	}
-
 	road_segment->color = Grey;
 	App->physics->AddBody(*road_segment, STATIC_MASS);
 
@@ -477,8 +510,8 @@ void ModuleSceneIntro::BuildCircuit_2()
 	AddRoad(96.0f, LEFT_ROAD, CIRCUIT_2);
 	AddRoad(24.0f, BACKWARD_ROAD, CIRCUIT_2);
 	AddRoad(150.0f, LEFT_ROAD, CIRCUIT_2);
-	AddRoad(80.0f, FORWARD_ROAD, CIRCUIT_2);
-	AddRoad(10.0f, FORWARD_RAMP, CIRCUIT_2);
+	AddRoad(60.0f, FORWARD_ROAD, CIRCUIT_2);
+	//AddRoad(10.0f, FORWARD_RAMP, CIRCUIT_2);
 }
 
 void ModuleSceneIntro::CreateWalls(Cube * road, vec3 position) // TODO: to be deleted proabably
