@@ -187,10 +187,14 @@ update_status ModuleSceneIntro::Update(float dt)
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
-	// Sensor detection for circuit 1
 
 	if (body1 == ground_sensor && (body2->type == PLAYER_01 || body2->type == PLAYER_02))
-		carFall = true;
+	{
+		if (body2->type == PLAYER_01)
+			p1_HasFallen = true;
+		else if (body2->type == PLAYER_02)
+			p2_HasFallen = true;
+	}
 
 	if (body1 == start_sensor && (App->player->last_sensor == fourth_sensor_c1 || App->player->last_sensor == fourth_sensor_c2) && App->player->last_sensor != nullptr)
 	{
@@ -259,9 +263,6 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		else if (body2->type == PLAYER_02)
 			App->player2->last_sensor = body1;;
 	}
-
-	// Sensor detection for circuit 2
-
 }
 
 void ModuleSceneIntro::RenderRoads() const

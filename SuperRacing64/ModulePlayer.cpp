@@ -163,10 +163,10 @@ update_status ModulePlayer::Update(float dt)
 			acceleration = BACK_ACCELERATION;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN || App->scene_intro->carFall)
+	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN || App->scene_intro->p1_HasFallen)
 	{
 		this->ResetVehicle();
-		App->scene_intro->carFall = false;
+		App->scene_intro->p1_HasFallen = false;
 	}
 		
 
@@ -216,7 +216,7 @@ void ModulePlayer::ResetVehicle()
 	else
 	{
 		vehicle->SetTransform(IdentityMatrix.M);
-		vehicle->SetPos(0, 12, 0);
+		vehicle->SetPos(2, 6, 0);
 		return;
 	}
 	vehicle->SetPos(last_sensor->GetPos().x, last_sensor->GetPos().y, last_sensor->GetPos().z);

@@ -154,6 +154,12 @@ update_status ModulePlayer2::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
 		this->ResetVehicle();
 
+	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->scene_intro->p2_HasFallen)
+	{
+		this->ResetVehicle();
+		App->scene_intro->p2_HasFallen = false;
+	}
+
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
 	vehicle->Brake(brake);
@@ -191,7 +197,7 @@ void ModulePlayer2::ResetVehicle()
 	else
 	{
 		vehicle->SetTransform(IdentityMatrix.M);
-		vehicle->SetPos(0, 12, 0);
+		vehicle->SetPos(-2, 6, 0);
 		return;
 	}
 	vehicle->SetPos(last_sensor->GetPos().x, last_sensor->GetPos().y, last_sensor->GetPos().z);

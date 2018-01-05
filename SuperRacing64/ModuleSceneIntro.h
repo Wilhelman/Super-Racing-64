@@ -70,7 +70,8 @@ public:
 
 public:
 	int current_players = 0;
-	bool carFall = false;
+	bool p1_HasFallen = false;
+	bool p2_HasFallen = false;
 
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
