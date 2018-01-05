@@ -150,8 +150,8 @@ update_status ModuleCamera3D::Update(float dt)
 		break;
 	}
 	case 2: {
-		Position = { 107, 210, -80 };
-		LookAt(vec3(107, 0, 60));
+		Position = { 65.35f, 228.46f, -68.17f };
+		LookAt(vec3(65, 0, -50));
 		break;
 	}
 	default:
