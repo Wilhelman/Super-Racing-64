@@ -121,26 +121,46 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	switch (current_players)
 	{
-	case 0:
+	case 0: {
 		char title[80];
 		sprintf_s(title, "Press 1 -> ONE PLAYER MODE | Press 2 -> TWO PLAYER MODE | ESC -> QUIT GAME");
 		App->window->SetTitle(title);
 		break;
+	}
 	case 1:
+	{
+		float sec = (float)App->player->p_timer.Read() / 1000.0f;
+		float min = sec / 60.0f;
+		float hour = min / 60.0f;
+
+		int sec_int = (int)sec;
+
+		if (min < 1.0f)
+			min = 0.0f;
+		if (sec < 1.0f)
+			sec = 0.0f;
+		if (hour < 1.0f)
+			hour = 0.0f;
+
+		if (min > 0.0f)
+			sec_int -= (int)min * 60;
+
 		char title2[250];
-		sprintf_s(title2, "%.1f Km/h | Remaining laps: %i | Last time: TODO: HACER TIMER c: | Enter to respawn", App->player->vehicle->GetKmh(), App->player->laps);
+		sprintf_s(title2, "%.1f Km/h | Remaining laps: %i | Current time: %i:%i:%i | Backspace to respawn", App->player->vehicle->GetKmh(), App->player->laps, (int)hour, (int)min, sec_int);
 		App->window->SetTitle(title2);
 		break;
-	case 2:
+	}
+	case 2: {
 		if (!App->player2->enabled) {
 			App->player2->enabled = true;
 			App->player2->Init();
 			App->player2->Start();
 		}
 		char title3[250];
-		sprintf_s(title3, "Player 1 - Remaining laps: %i - Last time: todo | Player 2 - Remaining laps: %i - Last time: todo",App->player->laps, App->player2->laps);
+		sprintf_s(title3, "Player 1 - Remaining laps: %i - Last time: todo | Player 2 - Remaining laps: %i - Last time: todo", App->player->laps, App->player2->laps);
 		App->window->SetTitle(title3);
 		break;
+	}
 	default:
 		break;
 	}

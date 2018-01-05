@@ -176,6 +176,11 @@ update_status ModulePlayer::Update(float dt)
 	sprintf_s(title, "%.1f Km/h", vehicle->GetKmh());
 	App->window->SetTitle(title);*/
 
+	if (App->scene_intro->current_players != 0 && !timer_on) {
+		p_timer.Start();
+		timer_on = true;
+	}
+
 	return UPDATE_CONTINUE;
 }
 

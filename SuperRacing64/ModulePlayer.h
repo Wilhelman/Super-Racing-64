@@ -35,4 +35,7 @@ public:
 	uint acceleration_fx = 0u;
 
 	bool p1_running = false;
+
+private:
+	bool timer_on = false;
 };
