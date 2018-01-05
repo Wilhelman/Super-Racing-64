@@ -69,6 +69,11 @@ bool ModuleSceneIntro::Start()
 	fourth_sensor_c2 = App->physics->AddBody(cube_sensor_c23, App->scene_intro, true, STATIC_MASS);
 	fourth_sensor_c2->SetPos(cube_sensor_c23.GetPos().x, cube_sensor_c23.GetPos().y, cube_sensor_c23.GetPos().z);
 
+	Cube cube_ground_sensor(500.0f, 0.5f, 500.0f);
+	cube_ground_sensor.SetPos(0.0, 0.5f, 0.0f);
+	ground_sensor = App->physics->AddBody(cube_ground_sensor, App->scene_intro, true, STATIC_MASS);
+	ground_sensor->SetPos(cube_ground_sensor.GetPos().x, cube_ground_sensor.GetPos().y, cube_ground_sensor.GetPos().z);
+
 	return ret;
 }
 
@@ -183,6 +188,9 @@ update_status ModuleSceneIntro::Update(float dt)
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	// Sensor detection for circuit 1
+
+	if (body1 == ground_sensor && (body2->type == PLAYER_01 || body2->type == PLAYER_02))
+		carFall = true;
 
 	if (body1 == start_sensor && (App->player->last_sensor == fourth_sensor_c1 || App->player->last_sensor == fourth_sensor_c2) && App->player->last_sensor != nullptr)
 	{

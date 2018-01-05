@@ -163,8 +163,12 @@ update_status ModulePlayer::Update(float dt)
 			acceleration = BACK_ACCELERATION;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN || App->scene_intro->carFall)
+	{
 		this->ResetVehicle();
+		App->scene_intro->carFall = false;
+	}
+		
 
 	vehicle->ApplyEngineForce(acceleration);
 	vehicle->Turn(turn);
@@ -200,7 +204,7 @@ void ModulePlayer::ResetVehicle()
 		0.0f, 1.0f, 0.0f, 0.0f,
 		0.0f, 0.0f, -1.0f, 0.0f,
 		0.0f, 0.0f, 0.0f, 1.0f);
-
+		
 	if (last_sensor == App->scene_intro->second_sensor_c1 || last_sensor == App->scene_intro->fourth_sensor_c1)
 		vehicle->SetTransform(NinetyDegCCwise_mat.M);
 	else if (last_sensor == App->scene_intro->third_sensor_c1

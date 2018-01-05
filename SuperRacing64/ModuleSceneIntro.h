@@ -70,6 +70,7 @@ public:
 
 public:
 	int current_players = 0;
+	bool carFall = false;
 
 	PhysBody3D* pb_chassis;
 	Cube p_chassis;
@@ -104,4 +105,5 @@ public:
 	PhysBody3D* second_sensor_c2 = nullptr;
 	PhysBody3D* third_sensor_c2 = nullptr;
 	PhysBody3D* fourth_sensor_c2 = nullptr;
+	PhysBody3D* ground_sensor = nullptr;
 };
