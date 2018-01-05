@@ -108,7 +108,7 @@ bool ModulePlayer2::Start()
 
 	vehicle = App->physics->AddVehicle(car);
 	vehicle->type = PLAYER_02;
-	vehicle->SetPos(0, 12, 0);
+	vehicle->SetPos(-2, 6, 0);
 
 	return true;
 }
