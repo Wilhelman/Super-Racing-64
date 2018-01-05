@@ -164,7 +164,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 	// Sensor detection for circuit 1
 
-	if (body1 == start_sensor && App->player->last_sensor == fourth_sensor_c1 && App->player->last_sensor != nullptr)
+	if (body1 == start_sensor && (App->player->last_sensor == fourth_sensor_c1 || App->player->last_sensor == fourth_sensor_c2) && App->player->last_sensor != nullptr)
 	{
 		if (body2->type == PLAYER_01)
 		{
@@ -210,35 +210,30 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		else if (body2->type == PLAYER_02)
 			App->player2->last_sensor = body1;;
 	}
+	else if (body1 == second_sensor_c2 && (App->player->last_sensor == start_sensor || App->player->last_sensor == nullptr))
+	{
+		if (body2->type == PLAYER_01)
+			App->player->last_sensor = body1;
+		else if (body2->type == PLAYER_02)
+			App->player2->last_sensor = body1;;
+	}
+	else if (body1 == third_sensor_c2 && App->player->last_sensor == second_sensor_c2)
+	{
+		if (body2->type == PLAYER_01)
+			App->player->last_sensor = body1;
+		else if (body2->type == PLAYER_02)
+			App->player2->last_sensor = body1;;
+	}
+	else if (body1 == fourth_sensor_c2 && App->player->last_sensor == third_sensor_c2)
+	{
+		if (body2->type == PLAYER_01)
+			App->player->last_sensor = body1;
+		else if (body2->type == PLAYER_02)
+			App->player2->last_sensor = body1;;
+	}
 
 	// Sensor detection for circuit 2
 
-	if (body1 == start_sensor && App->player->last_sensor == fourth_sensor_c2 && App->player->last_sensor != nullptr)
-	{
-		if (body2->type == PLAYER_01)
-		{
-			App->player->last_sensor = body1;
-			App->player->laps--;
-			if (App->player->laps == 0) {
-				current_players = 0;
-				if (App->player2->enabled) {
-					App->player2->enabled = false;
-					App->player2->CleanUp();
-				}
-			}
-		}
-		else if (body2->type == PLAYER_02)		//TODO SET LAST WINNER 
-		{
-			App->player2->last_sensor = body1;
-			App->player2->laps--;
-			if (App->player2->laps == 0)
-			{
-				current_players = 0;
-				App->player2->enabled = false;
-				App->player2->CleanUp();
-			}
-		}
-	}
 }
 
 void ModuleSceneIntro::RenderRoads() const
