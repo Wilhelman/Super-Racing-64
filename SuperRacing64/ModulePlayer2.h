@@ -18,6 +18,7 @@ public:
 
 	bool Start();
 	update_status Update(float dt);
+	void ResetVehicle();
 	bool CleanUp();
 
 public:

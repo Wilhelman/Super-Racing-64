@@ -184,28 +184,30 @@ update_status ModulePlayer::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-
 void ModulePlayer::ResetVehicle() 
 {
 	vehicle->vehicle->getRigidBody()->setLinearVelocity(btVector3(0, 0, 0));
 	vehicle->vehicle->getRigidBody()->setAngularVelocity(btVector3(0, 0, 0));
-	
+
 	mat4x4 NinetyDegCCwise_mat = mat4x4(
 		0.0f, 0.0f, -1.0f, 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
 		1.0f, 0.0f, 0.0f, 0.0f,
 		0.0f, 0.0f, 0.0f, 1.0f);
 
-	/*mat4x4 MidTurnDegCCwise_mat = mat4x4(
+	mat4x4 MidTurnDegCCwise_mat = mat4x4(
 		-1.0f, 0.0f, 0.0f, 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
 		0.0f, 0.0f, -1.0f, 0.0f,
-		0.0f, 0.0f, 0.0f, 1.0f);*/
+		0.0f, 0.0f, 0.0f, 1.0f);
 
 	if (last_sensor == App->scene_intro->second_sensor_c1 || last_sensor == App->scene_intro->fourth_sensor_c1)
 		vehicle->SetTransform(NinetyDegCCwise_mat.M);
 	else if (last_sensor == App->scene_intro->third_sensor_c1
-			 || last_sensor == App->scene_intro->second_sensor_c2)
+		|| last_sensor == App->scene_intro->second_sensor_c2
+		|| last_sensor == App->scene_intro->third_sensor_c2)
+		vehicle->SetTransform(MidTurnDegCCwise_mat.M);
+	else if (last_sensor == App->scene_intro->fourth_sensor_c2)
 		vehicle->SetTransform(IdentityMatrix.M);
 	else
 	{
