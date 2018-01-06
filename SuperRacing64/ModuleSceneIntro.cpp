@@ -213,6 +213,22 @@ update_status ModuleSceneIntro::Update(float dt)
 		break;
 	}
 	case 2: {
+
+		float l_sec = (float)timer_to_beat.Read() / 1000.0f;
+		float l_min = l_sec / 60.0f;
+		float l_hour = l_min / 60.0f;
+
+		int l_sec_int = (int)l_sec;
+
+		if (l_min < 1.0f)
+			l_min = 0.0f;
+		if (l_sec < 1.0f)
+			l_sec = 0.0f;
+		if (l_hour < 1.0f)
+			l_hour = 0.0f;
+
+		if (l_min > 0.0f)
+			l_sec_int -= (int)l_min * 60;
 		if (!App->player2->enabled) {
 			App->player2->enabled = true;
 			App->player2->Init();
@@ -222,7 +238,7 @@ update_status ModuleSceneIntro::Update(float dt)
 			race_started = true;
 
 		char title3[250];
-		sprintf_s(title3, "Player 1 - Remaining laps: %i - Last time: todo | Player 2 - Remaining laps: %i - Last time: todo", App->player->laps, App->player2->laps);
+		sprintf_s(title3, "Player 1 - Remaining laps: %i | Player 2 - Remaining laps: %i | To beat in 3 laps: 00:03:15 | Timer: %i:%i:%i", App->player->laps, App->player2->laps, (int)l_hour, (int)l_min, l_sec_int);
 		App->window->SetTitle(title3);
 		break;
 	}
