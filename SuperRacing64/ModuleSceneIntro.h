@@ -113,4 +113,7 @@ public:
 	PhysBody3D* ground_sensor = nullptr;
 
 	Timer timer_to_beat;
+
+private:
+	int did_player_loose = 0; //0 -> not_played, 1 -> Player01 win, 2 -> Player02 win, 3 -> Lose
 };

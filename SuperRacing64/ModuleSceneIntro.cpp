@@ -127,7 +127,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	//main menu settings
 
 	if (current_players != 0) {
-		if (timer_to_beat.Read() > 5000) {
+		if (timer_to_beat.Read() > 195000) {
 			current_players = 0;
 			App->player->last_sensor = nullptr;
 			App->player->ResetVehicle();
@@ -136,6 +136,7 @@ update_status ModuleSceneIntro::Update(float dt)
 				App->player2->enabled = false;
 				App->player2->CleanUp();
 			}
+			did_player_loose = 3;
 		}
 	}
 
@@ -143,7 +144,24 @@ update_status ModuleSceneIntro::Update(float dt)
 	{
 	case 0: {
 		char title[80];
-		sprintf_s(title, "Press 1 -> ONE PLAYER MODE | Press 2 -> TWO PLAYER MODE | ESC -> QUIT GAME");
+		switch (did_player_loose)
+		{
+		case 0:
+			sprintf_s(title, "Press 1 -> ONE PLAYER MODE | Press 2 -> TWO PLAYER MODE | ESC -> QUIT GAME");
+			break;
+		case 1:
+			sprintf_s(title, "PLAYER 01 WIN! ---- Press 1 -> ONE PLAYER MODE | Press 2 -> TWO PLAYER MODE | ESC -> QUIT GAME");
+			break;
+		case 2:
+			sprintf_s(title, "PLAYER 02 WIN! ---- Press 1 -> ONE PLAYER MODE | Press 2 -> TWO PLAYER MODE | ESC -> QUIT GAME");
+			break;
+		case 3:
+			sprintf_s(title, "YOU LOSE... Try again ---- Press 1 -> ONE PLAYER MODE | Press 2 -> TWO PLAYER MODE | ESC -> QUIT GAME");
+			break;
+		default:
+			break;
+		}
+		
 		App->window->SetTitle(title);
 		break;
 	}
@@ -256,10 +274,12 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 			App->player->p_timer.Stop();
 			App->player->p_timer.Start();
 			if (App->player->laps == 0){
+				did_player_loose = 1;
 				current_players = 0;
 				App->player->last_sensor = nullptr;
 				App->player->ResetVehicle();
 				if (App->player2->enabled) {
+					App->player2->vehicle->SetPos(1000, -4000, 0);
 					App->player2->enabled = false;
 					App->player2->CleanUp();
 				}
@@ -270,6 +290,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 			App->player2->laps--;
 			if (App->player2->laps == 0) 
 			{
+				did_player_loose = 2;
 				current_players = 0;
 				App->player2->enabled = false;
 				App->player2->CleanUp();
