@@ -25,6 +25,11 @@ Player controls:
 
 General/developer controls:
 - EXIT GAME: ESC key or click close button in window
+- ONE PLAYER MODE: 1 key
+- TWO PLAYER MODE: 2 key
+- MOVE PLAYER 1: ARROW keys
+- MOVE PLAYER 2: WASD keys
+- BRAKE: S o ARROW DOWN key
 
 
 
@@ -51,9 +56,9 @@ _Masó Garcia, Víctor's Github account:_
 * Code repository: GitHub
 * Others: Adobe Photoshop CS6 and MS Paint
 
-## Credits for artwork and music
-
-### Sprites
-
-
-### Music and sound fx
+## Credits for music
+** Game music can be found [here](https://downloads.khinsider.com/game-soundtracks/album/mario-kart-snes/07_Mario%2520Circuit.mp3)
+* This game uses these sounds from freesound:
+      
+	- 339703__ffkoenigsegg20012017__audi-v8-acceleration-sound.wav by [OwlStorm / Natalie Kirk](https://freesound.org/people/OwlStorm/)
+ - race_countdown2.mp3 by [Unnecro](https://freesound.org/people/Unnecro/)
