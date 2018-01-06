@@ -67,6 +67,8 @@ bool ModulePhysics3D::Start()
 		world->addRigidBody(body);
 	}
 
+	debug_draw->setDebugMode(1);
+
 	return true;
 }
 

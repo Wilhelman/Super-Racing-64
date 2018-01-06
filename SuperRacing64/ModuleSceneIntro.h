@@ -120,4 +120,13 @@ public:
 
 private:
 	int did_player_loose = 0; //0 -> not_played, 1 -> Player01 win, 2 -> Player02 win, 3 -> Lose
+
+	PhysBody3D* trap_01 = nullptr;
+	PhysBody3D* trap_02 = nullptr;
+	Cube trap = Cube(2, 2, 2);
+	Cube trap2 = Cube(2, 2, 2);
+	PhysBody3D* trap_01_2 = nullptr;
+	PhysBody3D* trap_02_2 = nullptr;
+	Cube trap_2 = Cube(2, 2, 2);
+	Cube trap2_2 = Cube(2, 2, 2);
 };

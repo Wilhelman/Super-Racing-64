@@ -79,6 +79,34 @@ bool ModuleSceneIntro::Start()
 	ground_sensor = App->physics->AddBody(cube_ground_sensor, App->scene_intro, true, STATIC_MASS);
 	ground_sensor->SetPos(cube_ground_sensor.GetPos().x, cube_ground_sensor.GetPos().y, cube_ground_sensor.GetPos().z);
 
+
+	//setting up the trap at the 2n circuit
+	trap.SetPos(-27, 14, -133);
+	trap.color = Red;
+	trap_01 = App->physics->AddBody(trap, STATIC_MASS);
+
+
+	trap2.SetPos(-27, 14, -137);
+	trap2.color = Red;
+	trap_02 = App->physics->AddBody(trap2, 50);
+
+	btHingeConstraint* hinge = App->physics->AddConstraintHinge(*trap_01, *trap_02, vec3(0, 0, 0), vec3(0, 0, -6), vec3(0, 1, 0), vec3(0, 1, 0), false);
+	hinge->enableAngularMotor(true, 2.0f, INFINITE);
+
+
+	trap_2.SetPos(96, 14, -157);
+	trap_2.color = Red;
+	trap_01_2 = App->physics->AddBody(trap_2, STATIC_MASS);
+
+
+	trap2_2.SetPos(96, 14, -161);
+	trap2_2.color = Red;
+	trap_02_2 = App->physics->AddBody(trap2_2, 50);
+
+	btHingeConstraint* hinge_2 = App->physics->AddConstraintHinge(*trap_01_2, *trap_02_2, vec3(0, 0, 0), vec3(0, 0, -6), vec3(0, 1, 0), vec3(0, 1, 0), false);
+	hinge_2->enableAngularMotor(true, -2.0f, INFINITE);
+
+
 	return ret;
 }
 
@@ -123,6 +151,16 @@ update_status ModuleSceneIntro::Update(float dt)
 	ground.axis = true;
 	ground.color = Green;
 	ground.Render();
+
+
+	trap2.Render();
+	trap2_2.Render();
+
+	mat4x4 transform;
+	trap_02->GetTransform(transform.M);
+	trap2.transform = transform;
+	trap_02_2->GetTransform(transform.M);
+	trap2_2.transform = transform;
 
 	RenderRoads();
 	RenderWalls();
@@ -257,6 +295,8 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && current_players == 0)
 	{
+		App->player->last_sensor = nullptr;
+		App->player->ResetVehicle();
 		timer_to_beat.Start();
 		current_players = 1;
 		App->player->laps = 3;
@@ -283,9 +323,9 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 			p2_HasFallen = true;
 	}
 
-	if (body1 == start_sensor && (App->player->last_sensor == fourth_sensor_c1 || App->player->last_sensor == fourth_sensor_c2) && App->player->last_sensor != nullptr)
+	if (body1 == start_sensor)
 	{
-		if (body2->type == PLAYER_01)
+		if (body2->type == PLAYER_01 && (App->player->last_sensor == fourth_sensor_c1 || App->player->last_sensor == fourth_sensor_c2) && App->player->last_sensor != nullptr)
 		{
 			App->player->last_sensor = body1;
 			App->player->laps--;
@@ -303,7 +343,7 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 					App->player2->CleanUp();
 				}
 			}
-		}else if (body2->type == PLAYER_02)		//TODO SET LAST WINNER 
+		}else if (body2->type == PLAYER_02 && (App->player2->last_sensor == fourth_sensor_c1 || App->player2->last_sensor == fourth_sensor_c2) && App->player2->last_sensor != nullptr)		//TODO SET LAST WINNER 
 		{
 			App->player2->last_sensor = body1;
 			App->player2->laps--;
@@ -311,51 +351,53 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 			{
 				did_player_loose = 2;
 				current_players = 0;
+				App->player->last_sensor = nullptr;
+				App->player->ResetVehicle();
 				App->player2->enabled = false;
 				App->player2->CleanUp();
 			}
 		}
 	}
-	else if (body1 == second_sensor_c1 && (App->player->last_sensor == start_sensor || App->player->last_sensor == nullptr))
+	else if (body1 == second_sensor_c1 )
 	{
-		if (body2->type == PLAYER_01)
+		if (body2->type == PLAYER_01 && (App->player->last_sensor == start_sensor || App->player->last_sensor == nullptr))
 			App->player->last_sensor = body1;
-		else if (body2->type == PLAYER_02)
+		else if (body2->type == PLAYER_02 && (App->player2->last_sensor == start_sensor || App->player2->last_sensor == nullptr))
 			App->player2->last_sensor = body1;;
 	}
-	else if (body1 == third_sensor_c1 && App->player->last_sensor == second_sensor_c1)
+	else if (body1 == third_sensor_c1 )
 	{
-		if (body2->type == PLAYER_01)
+		if (body2->type == PLAYER_01&& App->player->last_sensor == second_sensor_c1)
 			App->player->last_sensor = body1;
-		else if (body2->type == PLAYER_02)
+		else if (body2->type == PLAYER_02&& App->player2->last_sensor == second_sensor_c1)
 			App->player2->last_sensor = body1;;
 	}
-	else if (body1 == fourth_sensor_c1 && App->player->last_sensor == third_sensor_c1)
+	else if (body1 == fourth_sensor_c1 )
 	{
-		if (body2->type == PLAYER_01)
+		if (body2->type == PLAYER_01&& App->player->last_sensor == third_sensor_c1)
 			App->player->last_sensor = body1;
-		else if (body2->type == PLAYER_02)
+		else if (body2->type == PLAYER_02&& App->player2->last_sensor == third_sensor_c1)
 			App->player2->last_sensor = body1;;
 	}
-	else if (body1 == second_sensor_c2 && (App->player->last_sensor == start_sensor || App->player->last_sensor == nullptr))
+	else if (body1 == second_sensor_c2 )
 	{
-		if (body2->type == PLAYER_01)
+		if (body2->type == PLAYER_01 && (App->player->last_sensor == start_sensor || App->player->last_sensor == nullptr))
 			App->player->last_sensor = body1;
-		else if (body2->type == PLAYER_02)
+		else if (body2->type == PLAYER_02 && (App->player2->last_sensor == start_sensor || App->player2->last_sensor == nullptr))
 			App->player2->last_sensor = body1;;
 	}
-	else if (body1 == third_sensor_c2 && App->player->last_sensor == second_sensor_c2)
+	else if (body1 == third_sensor_c2 )
 	{
-		if (body2->type == PLAYER_01)
+		if (body2->type == PLAYER_01&& App->player->last_sensor == second_sensor_c2)
 			App->player->last_sensor = body1;
-		else if (body2->type == PLAYER_02)
+		else if (body2->type == PLAYER_02&& App->player2->last_sensor == second_sensor_c2)
 			App->player2->last_sensor = body1;;
 	}
-	else if (body1 == fourth_sensor_c2 && App->player->last_sensor == third_sensor_c2)
+	else if (body1 == fourth_sensor_c2 )
 	{
-		if (body2->type == PLAYER_01)
+		if (body2->type == PLAYER_01&& App->player->last_sensor == third_sensor_c2)
 			App->player->last_sensor = body1;
-		else if (body2->type == PLAYER_02)
+		else if (body2->type == PLAYER_02&& App->player2->last_sensor == third_sensor_c2)
 			App->player2->last_sensor = body1;;
 	}
 }
