@@ -24,7 +24,7 @@ public:
 public:
 
 	PhysBody3D* last_sensor = nullptr;
-	int laps = 2;
+	int laps = 3;
 	Timer p_timer;
 
 	PhysVehicle3D* vehicle;

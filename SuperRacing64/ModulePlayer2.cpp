@@ -151,10 +151,8 @@ update_status ModulePlayer2::Update(float dt)
 			acceleration = BACK_ACCELERATION;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
-		this->ResetVehicle();
 
-	if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN || App->scene_intro->p2_HasFallen)
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN || App->scene_intro->p2_HasFallen)
 	{
 		this->ResetVehicle();
 		App->scene_intro->p2_HasFallen = false;
