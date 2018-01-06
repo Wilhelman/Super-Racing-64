@@ -4,6 +4,7 @@ Project for Physics II subject. The main goal here is to create a race car game 
  - Win/Lose condition with a timer
  - A circuit
  - A camera that follows always the car
+ - At least one gameplay use for a constraint of any type
  
 This project has been done by two catalan students of CITM - UPC (Terrasa, Spain).  
 
@@ -22,9 +23,6 @@ _IMPORTANT: do not modify, change or add any folder or file as you might not be 
 
 ## Controls
 
-Player controls:
-
-General/developer controls:
 - EXIT GAME: ESC key or click close button in window
 - ONE PLAYER MODE: 1 key
 - TWO PLAYER MODE: 2 key
@@ -38,7 +36,9 @@ General/developer controls:
 
 ## How to play
 
-You just have to do 3 lapas before times runs out (3 minutes and 15 seconds). There are two ways of arriving to the finish line, you can choose either one or the other. There's also a 2 player mode. That's it, hope you have fun!
+You just have to do 3 laps before times runs out (3 minutes and 15 seconds). There are two ways of arriving to the finish line, you can choose either one or the other. But be careful there's one more dangeorous than the other: it has no walls, has two trap and a hell of a jump at the end. There's also a 2 player mode if you want to compete with someone else. If you turn upside down you can also respawn in the last sensor you've passed (see controls for more details).
+
+That's it, hope you have fun!
 
 
 ## Team members
