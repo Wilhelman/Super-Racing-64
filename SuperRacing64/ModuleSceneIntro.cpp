@@ -33,6 +33,9 @@ bool ModuleSceneIntro::Start()
 	BuildCircuit_1();
 	BuildCircuit_2();
 
+	//Walls
+	SetUpWalls();
+
 	// Start sensor -----------------
 	Cube cube_sensor_c11(10.0f, 2.0f, 1.0f);
 	cube_sensor_c11.SetPos(0.0f, 2.0f, 0.0f);
@@ -461,6 +464,43 @@ Cube * ModuleSceneIntro::BuildForawardRoad(Cube* last_cube, float length)
 	return road_segment;
 }
 
+void ModuleSceneIntro::CreateWall(float x, float y, float z, float length, RoadType wall_type)
+{
+	Cube* tmp_wall = nullptr;
+
+	switch (wall_type)
+	{
+	case FORWARD_ROAD:
+		tmp_wall = BuildWall(x, y, z, WALL_WIDTH, WALL_HEIGHT, length);
+		break;
+	case BACKWARD_ROAD:
+		tmp_wall = BuildWall(x, y, z, WALL_WIDTH, WALL_HEIGHT, length);
+		break;
+	case RIGHT_ROAD:
+		tmp_wall = BuildWall(x, y, z, length, WALL_HEIGHT, WALL_WIDTH);
+		break;
+	case LEFT_ROAD:
+		tmp_wall = BuildWall(x, y, z, length, WALL_HEIGHT, WALL_WIDTH);
+		break;
+	case ROAD_NOT_DEF:
+		break;
+	default:
+		break;
+	}
+
+	walls_list.add(tmp_wall);
+}
+
+Cube* ModuleSceneIntro::BuildWall(float x, float y, float z, float length, float width, float height)
+{
+	Cube* tmp_wall = new Cube(length, width, height);
+	tmp_wall->SetPos(x, y, z);
+	tmp_wall->color = Red;
+	App->physics->AddBody(*tmp_wall, STATIC_MASS);
+
+	return tmp_wall;
+}
+
 Cube * ModuleSceneIntro::BuildBackwardRoad(Cube * last_cube, float length)
 {
 	Cube* road_segment = new Cube(ROAD_WIDTH, ROAD_HEIGHT, length);
@@ -630,45 +670,35 @@ void ModuleSceneIntro::BuildCircuit_2()
 	//AddRoad(10.0f, FORWARD_RAMP, CIRCUIT_2);
 }
 
-void ModuleSceneIntro::CreateWalls(Cube * road, vec3 position) // TODO: to be deleted proabably
+void ModuleSceneIntro::SetUpWalls()
 {
-	if (road != nullptr)
-	{
-		int num_cubes = road->size.z / 2.0f;
-		int cubes_setted = 0;
-		int cube_offset = 0;
+	// Circuit 1 right walls
 
-		vec3 bottom_left(position.x + road->size.x / 2, position.y, position.z - road->size.z / 2);
-		vec3 bottom_right(position.x - road->size.x / 2, position.y, position.z - road->size.z / 2);
+	CreateWall(-ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f, 0.5f, 10.0f - 24.6f + ROAD_WIDTH / 2.0f, 32.0f + 24.6 + ROAD_WIDTH, FORWARD_ROAD);
+	CreateWall(27.0f, 0.5f, 31.0f + ROAD_WIDTH / 2.0f + WALL_WIDTH / 2.0f, 64.0f, LEFT_ROAD);
+	CreateWall(64.0f - ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f, 0.5f, 46.0f + ROAD_WIDTH, 40.0f, FORWARD_ROAD);
+	CreateWall(111.0f + ROAD_WIDTH / 2.0f, 0.5f, 71.0f + ROAD_WIDTH / 2.0f + WALL_WIDTH / 2.0f, 104.0f + ROAD_WIDTH, LEFT_ROAD);
+	CreateWall(168.0f + ROAD_WIDTH / 2.0f + WALL_WIDTH / 2.0f, 0.5f, 36.0f - ROAD_WIDTH / 2.0f, 80.0f + ROAD_WIDTH, BACKWARD_ROAD);
+	CreateWall(146.0f, 0.5f, -9.0f - ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f, 54.0f, LEFT_ROAD);
+	CreateWall(124.0f - ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f, 0.5f, 12.0f - ROAD_WIDTH / 2.0f, 32.0f + ROAD_WIDTH, FORWARD_ROAD);
+	CreateWall(105.0f, 0.5f, 33.0f - ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f, 48.0f - 2.0f*ROAD_WIDTH, RIGHT_ROAD);
+	CreateWall(86.0f + ROAD_WIDTH / 2.0f + WALL_WIDTH / 2.0f, 0.5f, -60.58f + ROAD_WIDTH / 2.0f - WALL_WIDTH, 16.0f + ROAD_WIDTH / 2.0f, BACKWARD_ROAD);
+	CreateWall(125.0f + ROAD_WIDTH / 2.0f, 0.5f, -73.58f + ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f, 88.0f - ROAD_WIDTH, LEFT_ROAD);
+	CreateWall(174.0f - ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f, 0.5f, -59.58f + ROAD_WIDTH / 2.0f, 38.0f - ROAD_WIDTH, FORWARD_ROAD);
+	CreateWall(87.0f - ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f, 0.5f, -35.58f - ROAD_WIDTH / 2.0f, 184.0f - ROAD_WIDTH, RIGHT_ROAD);
 
-		while (cubes_setted < num_cubes)
-		{
-			Cube* cube_left = new Cube(1.0f, 3.0f, 2.0f);
-
-			if (cubes_setted % 2 == 0)
-				cube_left->color = Red;
-			else
-				cube_left->color = White;
-
-			cube_left->SetPos(bottom_left.x + cube_left->size.x / 2, bottom_left.y + cube_left->size.y / 3, bottom_left.z + cube_left->size.z / 2 + cube_offset);
-			
-			App->physics->AddBody(*cube_left, STATIC_MASS);
-			walls_list.add(cube_left);
-
-			Cube* cube_right = new Cube(1.0f, 3.0f, 2.0f);
-
-			if (cubes_setted % 2 == 0)
-				cube_right->color = Red;
-			else
-				cube_right->color = White;
-
-			cube_right->SetPos(bottom_right.x - cube_left->size.x / 2, bottom_right.y + cube_left->size.y / 3, bottom_right.z + cube_left->size.z / 2 + cube_offset);
-
-			App->physics->AddBody(*cube_right, STATIC_MASS);
-			walls_list.add(cube_right);
-
-			cubes_setted++;
-			cube_offset += cube_right->size.z;
-		}
-	}
-} 
+	// Circuit 1 left walls
+	CreateWall(ROAD_WIDTH / 2.0f + WALL_WIDTH / 2.0f, 0.5f, 10.0f - 24.6f + ROAD_WIDTH + WALL_WIDTH, 32.0f + 24.6, FORWARD_ROAD);
+	CreateWall(27.0f + ROAD_WIDTH, 0.5f, 31.0f - ROAD_WIDTH / 2.0f + WALL_WIDTH / 2.0f, 64.0f, LEFT_ROAD);
+	CreateWall(64.0f + ROAD_WIDTH / 2.0f + WALL_WIDTH / 2.0f, 0.5f, 46.0f, 40.0f, FORWARD_ROAD);
+	CreateWall(111.0f + ROAD_WIDTH / 2.0f, 0.5f, 71.0f - ROAD_WIDTH / 2.0f + WALL_WIDTH / 2.0f, 104.0f - ROAD_WIDTH, LEFT_ROAD);
+	CreateWall(168.0f + ROAD_WIDTH / 2.0f + WALL_WIDTH / 2.0f - ROAD_WIDTH, 0.5f, 36.0f - ROAD_WIDTH / 2.0f, 80.0f - ROAD_WIDTH, BACKWARD_ROAD);
+	CreateWall(146.0f + WALL_WIDTH / 2.0f, 0.5f, -9.0f - ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f + ROAD_WIDTH, 54.0f - 2.0f*ROAD_WIDTH + WALL_WIDTH, LEFT_ROAD);
+	CreateWall(124.0f + ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f, 0.5f, 12.0f + ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f, 32.0f + ROAD_WIDTH + WALL_WIDTH, FORWARD_ROAD);
+	CreateWall(105.0f, 0.5f, 33.0f + ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f, 48.0f, RIGHT_ROAD);
+	CreateWall(86.0f + ROAD_WIDTH / 2.0f + WALL_WIDTH / 2.0f - ROAD_WIDTH, 0.5f, 30.0f, ROAD_WIDTH, BACKWARD_ROAD);
+	CreateWall(86.0f + ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f - ROAD_WIDTH, 0.5f, -60.58f - WALL_WIDTH, 16.0f + 1.5f*ROAD_WIDTH, BACKWARD_ROAD);
+	CreateWall(125.0f + ROAD_WIDTH / 2.0f, 0.5f, -73.58f - ROAD_WIDTH / 2.0f - WALL_WIDTH / 2.0f, 88.0f + ROAD_WIDTH, LEFT_ROAD);
+	CreateWall(174.0f + ROAD_WIDTH / 2.0f + WALL_WIDTH / 2.0f, 0.5f, -59.58f + ROAD_WIDTH / 2.0f, 38.0f + ROAD_WIDTH, FORWARD_ROAD);
+	CreateWall(87.0f + ROAD_WIDTH / 2.0f + WALL_WIDTH / 2.0f, 0.5f, -35.58f + ROAD_WIDTH / 2.0f, 184.0f - ROAD_WIDTH, RIGHT_ROAD);
+}

@@ -6,6 +6,8 @@
 
 #define ROAD_HEIGHT 1.0f
 #define ROAD_WIDTH 10.0f
+#define WALL_HEIGHT 5.0f
+#define WALL_WIDTH 2.0f
 
 #define STATIC_MASS 0.0f
 
@@ -50,8 +52,6 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
-	void CreateWalls(Cube* road, vec3 position);
-
 	void AddRoad(float length, RoadType road_type, Circuit circuit);
 	Cube* BuildForawardRoad(Cube* last_cube, float length);
 	Cube* BuildBackwardRoad(Cube* last_cube, float length);
@@ -61,6 +61,10 @@ public:
 	Cube* BuildBackwardRamp(Cube* last_cube, float length, vec3 axis);
 	Cube* BuildLeftRamp(Cube* last_cube, float length, vec3 axis);
 	Cube* BuildRightRamp(Cube* last_cube, float length, vec3 axis);
+
+	void CreateWall(float x, float y, float z, float length, RoadType wall_type);
+	Cube* BuildWall(float x, float y, float z, float length, float width, float height);
+	void SetUpWalls();
 
 	void BuildCircuit_1();
 	void BuildCircuit_2();
