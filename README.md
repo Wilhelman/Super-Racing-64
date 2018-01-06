@@ -4,6 +4,7 @@ Project for Physics II subject. The main goal here is to create a race car game 
  - Win/Lose condition with a timer
  - A circuit
  - A camera that follows always the car
+ - At least one gameplay use for a constraint of any type
  
 This project has been done by two catalan students of CITM - UPC (Terrasa, Spain).  
 
