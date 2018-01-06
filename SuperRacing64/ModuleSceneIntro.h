@@ -72,18 +72,22 @@ public:
 	int current_players = 0;
 	bool p1_HasFallen = false;
 	bool p2_HasFallen = false;
+	bool race_started = false;
+	bool countdown_played = false;
 
-	PhysBody3D* pb_chassis;
+	uint countdown_fx = 0u;
+
+	PhysBody3D* pb_chassis = nullptr;
 	Cube p_chassis;
 
-	PhysBody3D* pb_wheel;
+	PhysBody3D* pb_wheel = nullptr;
 	Cylinder p_wheel;
 
-	PhysBody3D* pb_wheel2;
+	PhysBody3D* pb_wheel2 = nullptr;
 	Cylinder p_wheel2;
 
-	PhysMotor3D* left_wheel;
-	PhysMotor3D* right_wheel;
+	PhysMotor3D* left_wheel = nullptr;
+	PhysMotor3D* right_wheel = nullptr;
 
 	//Roads
 	p2List<Cube*> roads_circuit_1;

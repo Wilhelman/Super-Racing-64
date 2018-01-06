@@ -22,6 +22,8 @@ bool ModuleSceneIntro::Start()
 
 	if (!App->audio->PlayMusic("audio/music/07_Mario_Circuit.ogg"))
 		LOG("Error playing music in ModuleSceneIntro Start");
+
+	countdown_fx = App->audio->LoadFx("audio/fx/countdown_fx.wav");
 	
 
 	App->camera->Move(vec3(1.0f, 1.0f, 0.0f));
@@ -134,6 +136,9 @@ update_status ModuleSceneIntro::Update(float dt)
 	}
 	case 1:
 	{
+		if (race_started == false)
+			race_started = true;
+
 		float sec = (float)App->player->p_timer.Read() / 1000.0f;
 		float min = sec / 60.0f;
 		float hour = min / 60.0f;
@@ -161,6 +166,9 @@ update_status ModuleSceneIntro::Update(float dt)
 			App->player2->Init();
 			App->player2->Start();
 		}
+		if (!race_started)
+			race_started = true;
+
 		char title3[250];
 		sprintf_s(title3, "Player 1 - Remaining laps: %i - Last time: todo | Player 2 - Remaining laps: %i - Last time: todo", App->player->laps, App->player2->laps);
 		App->window->SetTitle(title3);
@@ -169,7 +177,13 @@ update_status ModuleSceneIntro::Update(float dt)
 	default:
 		break;
 	}
-	
+
+	if (race_started && !countdown_played)
+	{
+		App->audio->PlayFx(countdown_fx);
+		countdown_played = true;
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && current_players == 0)
 	{
 		current_players = 1;
