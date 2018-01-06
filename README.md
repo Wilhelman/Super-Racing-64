@@ -32,6 +32,7 @@ _IMPORTANT: do not modify, change or add any folder or file as you might not be 
 - DEBUG MODE: F1
 - SPAWN PLAYER 1 (last sensor): BACKSPACE key
 - SPAWN PLAYER 2 (last sensor): R key
+- RETURN TO MAIN MENU: M key
 
 
 ## How to play
@@ -62,6 +63,5 @@ _Masó Garcia, Víctor's Github account:_
 ## Credits for music
 * Game music can be found [here](https://downloads.khinsider.com/game-soundtracks/album/mario-kart-snes/07_Mario%2520Circuit.mp3)
 * This game uses these sounds from freesound:
-      
-	- 339703__ffkoenigsegg20012017__audi-v8-acceleration-sound.wav by [FFKoenigsegg20012017](https://freesound.org/people/FFKoenigsegg20012017/)
+   
  	- race_countdown2.mp3 by [Unnecro](https://freesound.org/people/Unnecro/)
