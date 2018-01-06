@@ -229,7 +229,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 		char title2[250];
 		if(App->player->laps ==3)
-			sprintf_s(title2, "%.1f Km/h | Remaining laps: %i | Current time: %i:%i:%i | Backspace to respawn", App->player->vehicle->GetKmh(), App->player->laps, (int)hour, (int)min, sec_int);
+			sprintf_s(title2, "%.1f Km/h | Remaining laps: %i | Current time: %i:%i:%i | Backspace to respawn | M: Main Menu", App->player->vehicle->GetKmh(), App->player->laps, (int)hour, (int)min, sec_int);
 		else {
 			float l_sec = (float)App->player->last_time / 1000.0f;
 			float l_min = l_sec / 60.0f;
@@ -247,7 +247,7 @@ update_status ModuleSceneIntro::Update(float dt)
 			if (l_min > 0.0f)
 				l_sec_int -= (int)l_min * 60;
 
-			sprintf_s(title2, "%.1f Km/h | Remaining laps: %i | Current time: %i:%i:%i | Last lap: %i:%i:%i | To beat in 3 laps: 00:03:15 | Backspace to respawn", App->player->vehicle->GetKmh(), App->player->laps, (int)hour, (int)min, sec_int, (int)l_hour, (int)l_min, l_sec_int);
+			sprintf_s(title2, "%.1f Km/h | Remaining laps: %i | Current time: %i:%i:%i | Last lap: %i:%i:%i | To beat in 3 laps: 00:03:15 | Backspace to respawn  | M: Main Menu", App->player->vehicle->GetKmh(), App->player->laps, (int)hour, (int)min, sec_int, (int)l_hour, (int)l_min, l_sec_int);
 		}
 
 		App->window->SetTitle(title2);
@@ -279,7 +279,7 @@ update_status ModuleSceneIntro::Update(float dt)
 			race_started = true;
 
 		char title3[250];
-		sprintf_s(title3, "Player 1 - Remaining laps: %i | Player 2 - Remaining laps: %i | To beat in 3 laps: 00:03:15 | Timer: %i:%i:%i", App->player->laps, App->player2->laps, (int)l_hour, (int)l_min, l_sec_int);
+		sprintf_s(title3, "Player 1 - Backspace to reespawn - Remaining laps: %i | Player 2 - R to reespawn - Remaining laps: %i | To beat in 3 laps: 00:03:15 | Timer: %i:%i:%i | M: Main Menu", App->player->laps, App->player2->laps, (int)l_hour, (int)l_min, l_sec_int);
 		App->window->SetTitle(title3);
 		break;
 	}
@@ -307,6 +307,18 @@ update_status ModuleSceneIntro::Update(float dt)
 		current_players = 2;
 		App->player->laps = 3;
 		App->player2->laps = 3;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN && current_players != 0)
+	{
+		did_player_loose = 0;
+		current_players = 0;
+		App->player->last_sensor = nullptr;
+		App->player->ResetVehicle();
+		if (App->player2->enabled) {
+			App->player2->vehicle->SetPos(1000, -4000, 0);
+			App->player2->enabled = false;
+			App->player2->CleanUp();
+		}
 	}
 
 	return UPDATE_CONTINUE;
