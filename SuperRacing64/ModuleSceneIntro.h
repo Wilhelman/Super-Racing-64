@@ -111,4 +111,6 @@ public:
 	PhysBody3D* third_sensor_c2 = nullptr;
 	PhysBody3D* fourth_sensor_c2 = nullptr;
 	PhysBody3D* ground_sensor = nullptr;
+
+	Timer timer_to_beat;
 };

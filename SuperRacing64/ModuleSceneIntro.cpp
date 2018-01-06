@@ -126,6 +126,19 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	//main menu settings
 
+	if (current_players != 0) {
+		if (timer_to_beat.Read() > 5000) {
+			current_players = 0;
+			App->player->last_sensor = nullptr;
+			App->player->ResetVehicle();
+			if (App->player2->enabled) {
+				App->player2->vehicle->SetPos(1000, -4000, 0);
+				App->player2->enabled = false;
+				App->player2->CleanUp();
+			}
+		}
+	}
+
 	switch (current_players)
 	{
 	case 0: {
@@ -156,7 +169,28 @@ update_status ModuleSceneIntro::Update(float dt)
 			sec_int -= (int)min * 60;
 
 		char title2[250];
-		sprintf_s(title2, "%.1f Km/h | Remaining laps: %i | Current time: %i:%i:%i | Backspace to respawn", App->player->vehicle->GetKmh(), App->player->laps, (int)hour, (int)min, sec_int);
+		if(App->player->laps ==3)
+			sprintf_s(title2, "%.1f Km/h | Remaining laps: %i | Current time: %i:%i:%i | Backspace to respawn", App->player->vehicle->GetKmh(), App->player->laps, (int)hour, (int)min, sec_int);
+		else {
+			float l_sec = (float)App->player->last_time / 1000.0f;
+			float l_min = l_sec / 60.0f;
+			float l_hour = l_min / 60.0f;
+
+			int l_sec_int = (int)l_sec;
+
+			if (l_min < 1.0f)
+				l_min = 0.0f;
+			if (l_sec < 1.0f)
+				l_sec = 0.0f;
+			if (l_hour < 1.0f)
+				l_hour = 0.0f;
+
+			if (l_min > 0.0f)
+				l_sec_int -= (int)l_min * 60;
+
+			sprintf_s(title2, "%.1f Km/h | Remaining laps: %i | Current time: %i:%i:%i | Last lap: %i:%i:%i | To beat in 3 laps: 00:03:15 | Backspace to respawn", App->player->vehicle->GetKmh(), App->player->laps, (int)hour, (int)min, sec_int, (int)l_hour, (int)l_min, l_sec_int);
+		}
+
 		App->window->SetTitle(title2);
 		break;
 	}
@@ -186,14 +220,16 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN && current_players == 0)
 	{
+		timer_to_beat.Start();
 		current_players = 1;
-		App->player->laps = 2;
+		App->player->laps = 3;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN && current_players == 0)
 	{
+		timer_to_beat.Start();
 		current_players = 2;
-		App->player->laps = 2;
-		App->player2->laps = 2;
+		App->player->laps = 3;
+		App->player2->laps = 3;
 	}
 
 	return UPDATE_CONTINUE;
@@ -216,8 +252,13 @@ void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 		{
 			App->player->last_sensor = body1;
 			App->player->laps--;
+			App->player->last_time = App->player->p_timer.Read();
+			App->player->p_timer.Stop();
+			App->player->p_timer.Start();
 			if (App->player->laps == 0){
 				current_players = 0;
+				App->player->last_sensor = nullptr;
+				App->player->ResetVehicle();
 				if (App->player2->enabled) {
 					App->player2->enabled = false;
 					App->player2->CleanUp();
