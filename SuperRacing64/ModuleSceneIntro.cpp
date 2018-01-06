@@ -143,7 +143,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	switch (current_players)
 	{
 	case 0: {
-		char title[80];
+		char title[250];
 		switch (did_player_loose)
 		{
 		case 0:
