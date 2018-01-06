@@ -26,7 +26,7 @@ bool ModulePlayer2::Start()
 	car.chassis_offset.Set(0, 1.2, 0);
 
 	Cylinder chassis_pilot(0.65f, 1.9f);
-	chassis_pilot.color = { 255,0,0,255 };
+	chassis_pilot.color = { 0,0,255,255 };
 	car.chassis_pilot = chassis_pilot;
 	car.chassis_pilot_offset.Set(0, 1.8, 0.0);
 
