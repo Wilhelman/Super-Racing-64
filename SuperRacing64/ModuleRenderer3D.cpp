@@ -150,4 +150,9 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+	//glViewport(0, 0, width, height / 2);
+
+
+
 }

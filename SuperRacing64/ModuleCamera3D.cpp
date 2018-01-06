@@ -5,9 +5,9 @@
 #include "ModulePlayer.h"
 #include "PhysVehicle3d.h"
 
-#define X_CAM_OFFSET	15
+#define X_CAM_OFFSET	25
 #define Y_CAM_OFFSET	10
-#define Z_CAM_OFFSET	20
+#define Z_CAM_OFFSET	30
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
