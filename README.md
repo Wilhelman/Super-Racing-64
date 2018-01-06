@@ -57,8 +57,8 @@ _Masó Garcia, Víctor's Github account:_
 * Others: Adobe Photoshop CS6 and MS Paint
 
 ## Credits for music
-** Game music can be found [here](https://downloads.khinsider.com/game-soundtracks/album/mario-kart-snes/07_Mario%2520Circuit.mp3)
+* Game music can be found [here](https://downloads.khinsider.com/game-soundtracks/album/mario-kart-snes/07_Mario%2520Circuit.mp3)
 * This game uses these sounds from freesound:
       
 	- 339703__ffkoenigsegg20012017__audi-v8-acceleration-sound.wav by [OwlStorm / Natalie Kirk](https://freesound.org/people/OwlStorm/)
- - race_countdown2.mp3 by [Unnecro](https://freesound.org/people/Unnecro/)
+ 	- race_countdown2.mp3 by [Unnecro](https://freesound.org/people/Unnecro/)
