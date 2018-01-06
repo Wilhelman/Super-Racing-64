@@ -24,8 +24,9 @@ public:
 public:
 
 	PhysBody3D* last_sensor = nullptr;
-	int laps = 2;
+	int laps = 3;
 	Timer p_timer;
+	Uint32 last_time = 0;
 
 	PhysVehicle3D* vehicle = nullptr;
 	float turn = 0.0f;
