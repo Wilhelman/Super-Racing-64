@@ -38,7 +38,7 @@ General/developer controls:
 
 ## How to play
 
-You just have to do three lapas before times runs out (3 minutes and 15 seconds). There are two ways of arriving to the finish line, you can choose either one or the other. There's also a 2 player mode. That's it, hope yu hace fun!
+You just have to do 3 lapas before times runs out (3 minutes and 15 seconds). There are two ways of arriving to the finish line, you can choose either one or the other. There's also a 2 player mode. That's it, hope you have fun!
 
 
 ## Team members
