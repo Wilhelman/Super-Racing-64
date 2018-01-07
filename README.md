@@ -9,7 +9,7 @@ Project for Physics II subject. The main goal here is to create a race car game 
 This project has been done by two catalan students of CITM - UPC (Terrasa, Spain).  
 
 * [Github repository](https://github.com/Wilhelman/Super-Racing-64)  
-* Release [here]()
+* Release [here](https://github.com/Wilhelman/Super-Racing-64/releases)
 
 ## About the game
 
